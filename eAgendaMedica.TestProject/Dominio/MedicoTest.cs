@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using eAgendaMedica.Dominio.ModuloMedico;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using eAgendaMedica.Dominio.ModuloMedico;
 
 namespace eAgendaMedica.Dominio.TestProject.ModuloMedico
 {
@@ -12,7 +6,7 @@ namespace eAgendaMedica.Dominio.TestProject.ModuloMedico
     public class MedicoTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void Deve_atualizar_as_informacoes()
         {
             //arrange
             var medico = new Medico("Rech Açougeiro", "12345-SC", "Fazer Gambiarra");
