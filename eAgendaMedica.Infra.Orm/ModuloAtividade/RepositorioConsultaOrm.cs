@@ -5,9 +5,9 @@ using eAgendaMedica.Infra.Orm.Compartilhado;
 
 namespace eAgendaMedica.Infra.Orm.ModuloAtividade
 {
-    public class RepositorioCirurgiaOrm : RepositorioBase<Atividade>, IRepositorioAtividade
+    public class RepositorioConsultaOrm : RepositorioBase<Atividade>, IRepositorioAtividade
     {
-        public RepositorioCirurgiaOrm(IContextoPersistencia contextoPersistencia) : base(contextoPersistencia)
+        public RepositorioConsultaOrm(IContextoPersistencia contextoPersistencia) : base(contextoPersistencia)
         {
 
         }

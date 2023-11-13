@@ -1,4 +1,4 @@
-namespace eAgendaMedica.WebApplication
+namespace eAgendaMedica.WebApi
 {
     public class Program
     {
