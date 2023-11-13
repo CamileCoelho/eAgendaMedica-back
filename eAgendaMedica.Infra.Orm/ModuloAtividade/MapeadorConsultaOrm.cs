@@ -1,4 +1,6 @@
 ﻿using eAgendaMedica.Dominio.ModuloAtividade;
+using eAgendaMedica.Dominio.ModuloMedico;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace eAgendaMedica.Infra.Orm.ModuloAtividade
@@ -15,9 +17,15 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
             builder.Property(x => x.HoraTermino).HasColumnType("bigint").IsRequired();
             builder.Property(x => x.PeriodoRecuperacao).HasColumnType("bigint").IsRequired();
 
+            //builder.HasOne(x => x.Medico)
+            //       .WithOne()
+            //       .IsRequired()
+            //       .OnDelete(DeleteBehavior.NoAction);
+
             builder.HasOne(x => x.Medico)
-                   .WithOne()
-                   .IsRequired()
+                   .WithMany() 
+                   .IsRequired() 
+                   .HasForeignKey("MedicoId") 
                    .OnDelete(DeleteBehavior.NoAction);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using eAgendaMedica.Dominio.Compartilhado;
+using Microsoft.EntityFrameworkCore;
 
 namespace eAgendaMedica.Infra.Orm.Compartilhado
 {

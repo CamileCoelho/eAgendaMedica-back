@@ -1,4 +1,5 @@
 ﻿using eAgendaMedica.Dominio.ModuloMedico;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace eAgendaMedica.Infra.Orm.ModuloMedico

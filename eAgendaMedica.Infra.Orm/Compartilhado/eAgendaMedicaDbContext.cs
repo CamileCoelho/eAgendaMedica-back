@@ -1,4 +1,7 @@
 ﻿using eAgendaMedica.Dominio.Compartilhado;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using System.Reflection;
 

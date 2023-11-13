@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAgendaMedica.Aplicacao", "
 		{6A0B5DDF-1F48-4003-9BF2-BBAE420F99CB} = {6A0B5DDF-1F48-4003-9BF2-BBAE420F99CB}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAgendaMedica.Dominio.TestProject", "eAgendaMedica.TestProject\eAgendaMedica.Dominio.TestProject.csproj", "{CECE1B0A-659B-4F98-AE55-56048E44FFA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAgendaMedica.TestProject", "eAgendaMedica.TestProject\eAgendaMedica.TestProject.csproj", "{CECE1B0A-659B-4F98-AE55-56048E44FFA5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eAgendaMedica.WebApi", "eAgendaMedica.WebApi\eAgendaMedica.WebApi.csproj", "{322EBF2E-85AA-4122-86EE-6E6813007E6F}"
 EndProject

@@ -1,4 +1,5 @@
 ﻿using eAgendaMedica.Dominio.ModuloAtividade;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace eAgendaMedica.Infra.Orm.ModuloAtividade
@@ -7,7 +8,7 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
     {
         public void Configure(EntityTypeBuilder<Cirurgia> builder)
         {
-            builder.ToTable("TBConsulta");
+            builder.ToTable("TBCirurgia");
 
             builder.Property(x => x.Id).ValueGeneratedNever(); builder.Property(x => x.Data).IsRequired();
             builder.Property(x => x.Data).IsRequired();
@@ -15,6 +16,11 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
             builder.Property(x => x.HoraTermino).HasColumnType("bigint").IsRequired();
             builder.Property(x => x.PeriodoRecuperacao).HasColumnType("bigint").IsRequired();
 
+
+            //builder.HasMany(x => x.Medicos)
+            //       .WithOne()
+            //       .IsRequired()
+            //       .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(x => x.Medicos)
                    .WithOne()

@@ -1,4 +1,6 @@
-﻿namespace eAgendaMedica.Infra.Orm
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace eAgendaMedica.Infra.Orm
 {
     public static class MigradorBancoDadoseAgendaMedica
     {
