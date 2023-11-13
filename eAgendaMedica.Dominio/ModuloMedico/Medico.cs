@@ -17,7 +17,7 @@ namespace eAgendaMedica.Dominio.ModuloMedico
         {
             Nome = nome;
             Crm = crm;  
-            Especialidade = especialidade;  
+            Especialidade = especialidade;
         }
 
         public override void AtualizarInformacoes(Medico registroAtualizado)
