@@ -1,18 +1,17 @@
 ﻿using eAgendaMedica.Dominio.Compartilhado;
 using eAgendaMedica.Dominio.ModuloAtividade;
-using eAgendaMedica.Dominio.ModuloMedico;
 using eAgendaMedica.Infra.Orm.Compartilhado;
 
 namespace eAgendaMedica.Infra.Orm.ModuloAtividade
 {
-    public class RepositorioConsultaOrm : RepositorioBase<Atividade>, IRepositorioAtividade
+    public class RepositorioConsultaOrm : RepositorioBase<Consulta>, IRepositorioConsulta
     {
         public RepositorioConsultaOrm(IContextoPersistencia contextoPersistencia) : base(contextoPersistencia)
         {
 
         }
 
-        public List<Atividade> SelecionarAtividadesFuturas(DateTime dataInicial, DateTime dataFinal)
+        public List<Consulta> SelecionarAtividadesFuturas(DateTime dataInicial, DateTime dataFinal)
         {
             return registros
               .Where(x => x.Data >= dataInicial)
@@ -20,7 +19,7 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
               .ToList();
         }
 
-        public List<Atividade> SelecionarAtividadesPassadas(DateTime dataDeHoje)
+        public List<Consulta> SelecionarAtividadesPassadas(DateTime dataDeHoje)
         {
             return registros
                .Where(x => x.Data < dataDeHoje)
