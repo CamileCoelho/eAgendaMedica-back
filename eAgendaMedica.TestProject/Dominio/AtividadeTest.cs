@@ -38,7 +38,10 @@ namespace eAgendaMedica.Dominio.TestProject.ModuloMedico
             consulta.AtualizarInformacoes(consultaAtualizada);
 
             //assert
-            Assert.AreNotEqual(consulta, consultaAtualizada);
+            Assert.AreEqual(consultaAtualizada.Data, consulta.Data);
+            Assert.AreEqual(consultaAtualizada.HoraInicio, consulta.HoraInicio);
+            Assert.AreEqual(consultaAtualizada.HoraTermino, consulta.HoraTermino);
+            Assert.AreEqual(consultaAtualizada.Medico, consulta.Medico);
         }
 
         [TestMethod]
@@ -54,7 +57,10 @@ namespace eAgendaMedica.Dominio.TestProject.ModuloMedico
             cirurgia.AtualizarInformacoes(cirurgiaAtualizada);
 
             //assert
-            Assert.AreNotEqual(cirurgia, cirurgiaAtualizada);
+            Assert.AreEqual(cirurgiaAtualizada.Data, cirurgia.Data);
+            Assert.AreEqual(cirurgiaAtualizada.HoraInicio, cirurgia.HoraInicio);
+            Assert.AreEqual(cirurgiaAtualizada.HoraTermino, cirurgia.HoraTermino);
+            Assert.AreEqual(cirurgiaAtualizada.Medicos, cirurgia.Medicos);
         }
     }
 }

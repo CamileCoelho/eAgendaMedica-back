@@ -30,5 +30,25 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
             PeriodoRecuperacao = registroAtualizado.PeriodoRecuperacao;
             Medicos = registroAtualizado.Medicos;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Cirurgia other = (Cirurgia)obj;
+            return this.Data == other.Data &&
+                   this.HoraInicio == other.HoraInicio &&
+                   this.HoraTermino == other.HoraTermino &&
+                   this.PeriodoRecuperacao == other.PeriodoRecuperacao &&
+                   this.Medicos.SequenceEqual(other.Medicos);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Data, HoraInicio, HoraTermino, PeriodoRecuperacao, Medicos);
+        }
     }
 }
