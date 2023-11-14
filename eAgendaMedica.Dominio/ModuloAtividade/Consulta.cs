@@ -2,8 +2,12 @@
 
 namespace eAgendaMedica.Dominio.ModuloAtividade
 {
-    public class Consulta : Atividade
+    public class Consulta : EntidadeBase<Consulta>
     {
+        public DateTime Data { get; set; }
+        public TimeSpan HoraInicio { get; set; }
+        public TimeSpan HoraTermino { get; set; }
+        public TimeSpan PeriodoRecuperacao { get; set; }
         public Medico Medico { get; set; }
 
         public Consulta()
@@ -22,7 +26,7 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
             Medico = medico;        
         }
 
-        public void AtualizarInformacoes(Consulta registroAtualizado)
+        public override void AtualizarInformacoes(Consulta registroAtualizado)
         {
             Data = registroAtualizado.Data;
             HoraInicio = registroAtualizado.HoraInicio;

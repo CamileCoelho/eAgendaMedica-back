@@ -2,8 +2,12 @@
 
 namespace eAgendaMedica.Dominio.ModuloAtividade
 {
-    public class Cirurgia : Atividade
+    public class Cirurgia : EntidadeBase<Cirurgia>
     {
+        public DateTime Data { get; set; }
+        public TimeSpan HoraInicio { get; set; }
+        public TimeSpan HoraTermino { get; set; }
+        public TimeSpan PeriodoRecuperacao { get; set; }
         public List<Medico> Medicos { get; set; }
 
         public Cirurgia()
@@ -22,7 +26,7 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
             Medicos = medicos;
         }
 
-        public void AtualizarInformacoes(Cirurgia registroAtualizado)
+        public override void AtualizarInformacoes(Cirurgia registroAtualizado)
         {
             Data = registroAtualizado.Data;
             HoraInicio = registroAtualizado.HoraInicio;
