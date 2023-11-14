@@ -31,17 +31,35 @@ namespace eAgendaMedica.Infra.Orm.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "varchar(200)", nullable: false),
                     Crm = table.Column<string>(type: "varchar(20)", nullable: true),
-                    Especialidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CirurgiaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Especialidade = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TBMedico", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TBCirurgia_TBMedico",
+                columns: table => new
+                {
+                    CirurgiasId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MedicosId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TBCirurgia_TBMedico", x => new { x.CirurgiasId, x.MedicosId });
                     table.ForeignKey(
-                        name: "FK_TBMedico_TBCirurgia_CirurgiaId",
-                        column: x => x.CirurgiaId,
+                        name: "FK_TBCirurgia_TBMedico_TBCirurgia_CirurgiasId",
+                        column: x => x.CirurgiasId,
                         principalTable: "TBCirurgia",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TBCirurgia_TBMedico_TBMedico_MedicosId",
+                        column: x => x.MedicosId,
+                        principalTable: "TBMedico",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,26 +84,29 @@ namespace eAgendaMedica.Infra.Orm.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_TBCirurgia_TBMedico_MedicosId",
+                table: "TBCirurgia_TBMedico",
+                column: "MedicosId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TBConsulta_MedicoId",
                 table: "TBConsulta",
                 column: "MedicoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TBMedico_CirurgiaId",
-                table: "TBMedico",
-                column: "CirurgiaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "TBCirurgia_TBMedico");
+
+            migrationBuilder.DropTable(
                 name: "TBConsulta");
 
             migrationBuilder.DropTable(
-                name: "TBMedico");
+                name: "TBCirurgia");
 
             migrationBuilder.DropTable(
-                name: "TBCirurgia");
+                name: "TBMedico");
         }
     }
 }

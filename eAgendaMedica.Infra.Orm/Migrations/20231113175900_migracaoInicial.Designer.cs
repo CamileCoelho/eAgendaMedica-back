@@ -12,7 +12,7 @@ using eAgendaMedica.Infra.Orm;
 namespace eAgendaMedica.Infra.Orm.Migrations
 {
     [DbContext(typeof(eAgendaMedicaDbContext))]
-    [Migration("20231113032251_migracaoInicial")]
+    [Migration("20231113175900_migracaoInicial")]
     partial class migracaoInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,21 @@ namespace eAgendaMedica.Infra.Orm.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("CirurgiaMedico", b =>
+                {
+                    b.Property<Guid>("CirurgiasId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MedicosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CirurgiasId", "MedicosId");
+
+                    b.HasIndex("MedicosId");
+
+                    b.ToTable("TBCirurgia_TBMedico", (string)null);
+                });
 
             modelBuilder.Entity("eAgendaMedica.Dominio.ModuloAtividade.Cirurgia", b =>
                 {
@@ -78,9 +93,6 @@ namespace eAgendaMedica.Infra.Orm.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CirurgiaId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Crm")
                         .HasColumnType("varchar(20)");
 
@@ -94,9 +106,22 @@ namespace eAgendaMedica.Infra.Orm.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CirurgiaId");
-
                     b.ToTable("TBMedico", (string)null);
+                });
+
+            modelBuilder.Entity("CirurgiaMedico", b =>
+                {
+                    b.HasOne("eAgendaMedica.Dominio.ModuloAtividade.Cirurgia", null)
+                        .WithMany()
+                        .HasForeignKey("CirurgiasId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eAgendaMedica.Dominio.ModuloMedico.Medico", null)
+                        .WithMany()
+                        .HasForeignKey("MedicosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("eAgendaMedica.Dominio.ModuloAtividade.Consulta", b =>
@@ -108,20 +133,6 @@ namespace eAgendaMedica.Infra.Orm.Migrations
                         .IsRequired();
 
                     b.Navigation("Medico");
-                });
-
-            modelBuilder.Entity("eAgendaMedica.Dominio.ModuloMedico.Medico", b =>
-                {
-                    b.HasOne("eAgendaMedica.Dominio.ModuloAtividade.Cirurgia", null)
-                        .WithMany("Medicos")
-                        .HasForeignKey("CirurgiaId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("eAgendaMedica.Dominio.ModuloAtividade.Cirurgia", b =>
-                {
-                    b.Navigation("Medicos");
                 });
 #pragma warning restore 612, 618
         }

@@ -16,16 +16,14 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
             builder.Property(x => x.HoraTermino).HasColumnType("bigint").IsRequired();
             builder.Property(x => x.PeriodoRecuperacao).HasColumnType("bigint").IsRequired();
 
-
             //builder.HasMany(x => x.Medicos)
             //       .WithOne()
             //       .IsRequired()
             //       .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(x => x.Medicos)
-                   .WithOne()
-                   .IsRequired()
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .WithMany(x => x.Cirurgias)
+                   .UsingEntity(x => x.ToTable("TBCirurgia_TBMedico"));
         }
     }
 }
