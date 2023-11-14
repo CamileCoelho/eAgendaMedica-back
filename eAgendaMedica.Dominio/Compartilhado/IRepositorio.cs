@@ -2,18 +2,16 @@
 {
     public interface IRepositorio<T> where T : EntidadeBase<T>
     {
-        void Inserir(T novoRegistro);
+        Task<bool> InserirAsync(T registro);
 
         void Editar(T registro);
 
         void Excluir(T registro);
 
-        List<T> SelecionarTodos();
-
         T SelecionarPorId(Guid id);
 
-        Task<bool> InserirAsync(T novoRegistro);
+        Task<T> SelecionarPorIdAsync(Guid id);
+
         Task<List<T>> SelecionarTodosAsync();
-        Task<T> SelecionarPorIdAsync(Guid numero);
     }
 }
