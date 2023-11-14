@@ -1,6 +1,4 @@
-﻿using eAgendaMedica.Dominio.Compartilhado;
-
-namespace eAgendaMedica.Dominio.ModuloAtividade
+﻿namespace eAgendaMedica.Dominio.ModuloAtividade
 {
     public abstract class Atividade : EntidadeBase<Atividade>
     {
