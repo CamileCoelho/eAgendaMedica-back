@@ -5,7 +5,7 @@ namespace eAgendaMedica.Infra.Orm.Compartilhado
 {
     public abstract class RepositorioBase<T> where T : EntidadeBase<T>
     {
-        private readonly eAgendaMedicaDbContext dbContext;
+        protected readonly eAgendaMedicaDbContext dbContext;
         protected DbSet<T> registros;
 
         public RepositorioBase(IContextoPersistencia contextoPersistencia)
