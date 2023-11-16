@@ -4,7 +4,7 @@ namespace eAgendaMedica.Integration.TestProject.Compartilhado
 {
     public abstract class RepositorioBaseTest
     {
-        private readonly eAgendaMedicaDbContext dbContext;
+        protected readonly eAgendaMedicaDbContext dbContext;
         public RepositorioBaseTest()
         {
             var optionsBuilder = new DbContextOptionsBuilder<eAgendaMedicaDbContext>();
@@ -17,11 +17,6 @@ namespace eAgendaMedica.Integration.TestProject.Compartilhado
 
             if (qtdMigracoesPendentes != 0)
                 dbContext.Database.Migrate();
-        }
-
-        public eAgendaMedicaDbContext CreateDbContext()
-        {
-            return dbContext;
         }
     }
 }
