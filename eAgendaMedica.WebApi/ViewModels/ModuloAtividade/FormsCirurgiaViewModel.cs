@@ -1,6 +1,4 @@
-﻿using eAgendaMedica.WebApi.ViewModels.ModuloMedico;
-
-namespace eAgendaMedica.WebApi.ViewModels.ModuloAtividade
+﻿namespace eAgendaMedica.WebApi.ViewModels.ModuloAtividade
 {
     public class FormsCirurgiaViewModel
     {
@@ -8,11 +6,11 @@ namespace eAgendaMedica.WebApi.ViewModels.ModuloAtividade
         public TimeSpan HoraInicio { get; set; }
         public TimeSpan HoraTermino { get; set; }
         public TimeSpan PeriodoRecuperacao { get; set; }
-        public List<ListarMedicoViewModel> Medicos { get; set; }
+        public List<Guid> MedicoIds { get; set; }
 
         public FormsCirurgiaViewModel()
         {
-            Medicos = new List<ListarMedicoViewModel>();
+            MedicoIds = new List<Guid>();
         }
     }
 }

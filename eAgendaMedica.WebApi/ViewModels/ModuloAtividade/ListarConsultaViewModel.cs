@@ -7,11 +7,6 @@
         public TimeSpan HoraInicio { get; set; }
         public TimeSpan HoraTermino { get; set; }
         public TimeSpan PeriodoRecuperacao { get; set; }
-        //public ListarMedicoViewModel Medico { get; set; }
-
-        //public ListarConsultaViewModel()
-        //{
-        //    Medico = new ListarMedicoViewModel();
-        //}
+        public string NomeMedico { get; set; }
     }
 }
