@@ -1,7 +1,7 @@
 ﻿using eAgendaMedica.Dominio.ModuloMedico;
 using eAgendaMedica.WebApi.ViewModels.ModuloMedico;
 
-namespace eAgendaMedica.WebApi.Config.AutoMapperProfiles
+namespace eAgendaMedica.WebApi.Config.AutoMapperConfig
 {
     public class MedicoProfile : Profile
     {
