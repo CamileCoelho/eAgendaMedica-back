@@ -1,13 +1,4 @@
-using eAgendaMedica.Aplicacao.ModuloAtividade;
-using eAgendaMedica.Aplicacao.ModuloMedico;
-using eAgendaMedica.Dominio.Compartilhado;
-using eAgendaMedica.Dominio.ModuloAtividade;
-using eAgendaMedica.Dominio.ModuloMedico;
-using eAgendaMedica.Infra.Orm;
-using eAgendaMedica.Infra.Orm.ModuloAtividade;
-using eAgendaMedica.Infra.Orm.ModuloMedico;
-using eAgendaMedica.WebApi.Config;
-using eAgendaMedica.WebApi.Config.AutoMapperProfiles;
+using eAgendaMedica.WebApi.Config.AutoMapperConfig;
 
 namespace eAgendaMedica.WebApi
 {
@@ -17,44 +8,29 @@ namespace eAgendaMedica.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
-
             builder.Services.Configure<ApiBehaviorOptions>(config =>
             {
                 config.SuppressModelStateInvalidFilter = true;
-            }); 
-            
-            var connectionString = builder.Configuration.GetConnectionString("SqlServer");
-
-            builder.Services.AddDbContext<IContextoPersistencia, eAgendaMedicaDbContext>(optionsBuilder =>
-            {
-                optionsBuilder.UseSqlServer(connectionString);
             });
 
-            builder.Services.AddTransient<IRepositorioMedico, RepositorioMedicoOrm>();
-            builder.Services.AddTransient<ServicoMedico>();
-
-            builder.Services.AddTransient<IRepositorioConsulta, RepositorioConsultaOrm>();
-            builder.Services.AddTransient<ServicoConsulta>();
-
-            builder.Services.AddTransient<IRepositorioCirurgia, RepositorioCirurgiaOrm>();
-            builder.Services.AddTransient<ServicoCirurgia>();
-
-            //builder.Services.AddTransient<ConfigurarCategoriaMappingAction>();
+            builder.Services.ConfigurarSerilog(builder.Logging);
 
             builder.Services.AddAutoMapper(config =>
             {
                 config.AddProfile<MedicoProfile>();
-                config.AddProfile<AtividadeProfile>();
+                config.AddProfile<CirurgiaProfile>();
+                config.AddProfile<ConsultaProfile>();
             });
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.ConfigurarInjecaoDependencia(builder.Configuration);
+
+            builder.Services.ConfigurarSwagger();
+
+            builder.Services.ConfigurarControllers();
 
             var app = builder.Build();
 
-            app.UseMiddleware<ManipuladorDeExessoes>();
+            app.UseMiddleware<ManipuladorDeExcecoes>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

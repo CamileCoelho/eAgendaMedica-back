@@ -1,12 +1,13 @@
-﻿using System.Text.Json;
+﻿using Serilog;
+using System.Text.Json;
 
 namespace eAgendaMedica.WebApi.Config
 {
-    public class ManipuladorDeExessoes
+    public class ManipuladorDeExcecoes
     {
         private readonly RequestDelegate requestDelegate;
 
-        public ManipuladorDeExessoes(RequestDelegate requestDelegate)
+        public ManipuladorDeExcecoes(RequestDelegate requestDelegate)
         {
             this.requestDelegate = requestDelegate;
         }
@@ -15,7 +16,7 @@ namespace eAgendaMedica.WebApi.Config
         {
             try
             {
-                await requestDelegate(ctx);
+                await this.requestDelegate(ctx);
             }
             catch (Exception ex)
             {
@@ -25,9 +26,10 @@ namespace eAgendaMedica.WebApi.Config
                 var problema = new
                 {
                     Sucesso = false,
-                    Erros = new List<string>
-                        { "Nossa aplicação está com alguns problemas, tente novamente mais tarde" }
+                    Erros = new List<string> { ex.Message }
                 };
+
+                Log.Logger.Error(ex, ex.Message);
 
                 ctx.Response.WriteAsync(JsonSerializer.Serialize(problema));
             }
