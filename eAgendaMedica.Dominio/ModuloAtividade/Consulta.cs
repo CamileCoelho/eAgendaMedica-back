@@ -23,6 +23,16 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
             HoraInicio = horaInicio;
             HoraTermino = horaTermino;
             PeriodoRecuperacao = TimeSpan.FromMinutes(20);
+
+            TimeSpan novaHora = HoraTermino.Add(PeriodoRecuperacao);
+
+            while (novaHora.TotalHours >= 24)
+            {
+                Data = Data.AddDays(1);
+                novaHora = novaHora.Subtract(TimeSpan.FromHours(24));
+            }
+
+            HoraTermino = novaHora;
             Medico = medico;        
         }
 
