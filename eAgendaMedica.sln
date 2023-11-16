@@ -38,7 +38,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAgendaMedica.Aplicacao", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAgendaMedica.TestProject", "eAgendaMedica.TestProject\eAgendaMedica.TestProject.csproj", "{CECE1B0A-659B-4F98-AE55-56048E44FFA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eAgendaMedica.WebApi", "eAgendaMedica.WebApi\eAgendaMedica.WebApi.csproj", "{322EBF2E-85AA-4122-86EE-6E6813007E6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAgendaMedica.WebApi", "eAgendaMedica.WebApi\eAgendaMedica.WebApi.csproj", "{322EBF2E-85AA-4122-86EE-6E6813007E6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eAgendaMedica.Integration.TestProject", "eAgendaMedica.Integration.TestProject\eAgendaMedica.Integration.TestProject.csproj", "{AB987C7E-0B44-4682-9C46-B9406BCBF48F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +72,10 @@ Global
 		{322EBF2E-85AA-4122-86EE-6E6813007E6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{322EBF2E-85AA-4122-86EE-6E6813007E6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{322EBF2E-85AA-4122-86EE-6E6813007E6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB987C7E-0B44-4682-9C46-B9406BCBF48F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB987C7E-0B44-4682-9C46-B9406BCBF48F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB987C7E-0B44-4682-9C46-B9406BCBF48F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB987C7E-0B44-4682-9C46-B9406BCBF48F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{6699E9A0-3F8E-433C-A441-081C766CEA81} = {947B654A-5ECA-4AFF-B628-481CD710F446}
 		{CECE1B0A-659B-4F98-AE55-56048E44FFA5} = {68F81F44-9DB1-429F-8298-0CDF2A7E9AE1}
 		{322EBF2E-85AA-4122-86EE-6E6813007E6F} = {087CE3C3-6163-4DE6-B985-6A780D938664}
+		{AB987C7E-0B44-4682-9C46-B9406BCBF48F} = {0A087E30-C5F1-4D6C-83E5-44E691965F29}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A5889A3-86F7-4C7D-9BE2-7F68E131B3FB}
