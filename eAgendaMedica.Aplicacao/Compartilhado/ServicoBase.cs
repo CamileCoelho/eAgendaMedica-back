@@ -1,4 +1,6 @@
-﻿namespace eAgendaMedica.Aplicacao
+﻿using eAgendaMedica.Dominio.ModuloMedico;
+
+namespace eAgendaMedica.Aplicacao
 {
     public abstract class ServicoBase<TDominio, TValidador> where TValidador : AbstractValidator<TDominio>, new()
     {

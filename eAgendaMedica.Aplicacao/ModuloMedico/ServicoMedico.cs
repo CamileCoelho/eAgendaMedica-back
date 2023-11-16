@@ -1,9 +1,8 @@
-﻿using eAgendaMedica.Dominio.ModuloAtividade;
-using eAgendaMedica.Dominio.ModuloMedico;
+﻿using eAgendaMedica.Dominio.ModuloMedico;
 
 namespace eAgendaMedica.Aplicacao.ModuloMedico
 {
-    public class ServicoMedico
+    public class ServicoMedico : ServicoBase<Medico, ValidadorMedico>
     {
         private readonly IRepositorioMedico repositorioMedico;
         private readonly IContextoPersistencia contextoPersistencia;
@@ -17,7 +16,7 @@ namespace eAgendaMedica.Aplicacao.ModuloMedico
 
         public async Task<Result<Medico>> InserirAsync(Medico medico)
         {
-            var resultadoValidacao = ValidarMedico(medico);
+            var resultadoValidacao = Validar(medico);
 
             if (resultadoValidacao.IsFailed)
                 return Result.Fail(resultadoValidacao.Errors);
@@ -31,7 +30,7 @@ namespace eAgendaMedica.Aplicacao.ModuloMedico
 
         public async Task<Result<Medico>> EditarAsync(Medico medico)
         {
-            var resultadoValidacao = ValidarMedico(medico);
+            var resultadoValidacao = Validar(medico);
 
             if (resultadoValidacao.IsFailed)
                 return Result.Fail(resultadoValidacao.Errors);
@@ -46,6 +45,9 @@ namespace eAgendaMedica.Aplicacao.ModuloMedico
         public async Task<Result<Medico>> ExcluirAsync(Guid id)
         {
             var medico = await repositorioMedico.SelecionarPorIdAsync(id);
+
+            if (medico == null)
+                return Result.Fail("Médico não encontrado.");
 
             repositorioMedico.Excluir(medico);
 
@@ -65,25 +67,10 @@ namespace eAgendaMedica.Aplicacao.ModuloMedico
         {
             var medico = await repositorioMedico.SelecionarPorIdAsync(id);
 
+            if (medico == null)
+                return Result.Fail("Médico não encontrado.");
+
             return Result.Ok(medico);
-        }
-
-
-        private Result ValidarMedico(Medico medico)
-        {
-            ValidadorMedico validador = new ValidadorMedico();
-
-            var resultadoValidacao = validador.Validate(medico);
-
-            List<Error> erros = new List<Error>();
-
-            foreach (var erro in resultadoValidacao.Errors)
-                erros.Add(new Error(erro.ErrorMessage));
-
-            if (erros.Any())
-                return Result.Fail(erros.ToArray());
-
-            return Result.Ok();
-        }
+        }       
     }
 }

@@ -2,7 +2,7 @@
 
 namespace eAgendaMedica.Aplicacao.ModuloAtividade
 {
-    public class ServicoConsulta
+    public class ServicoConsulta : ServicoBase<Consulta, ValidadorConsulta>
     {
         private readonly IRepositorioConsulta repositorioConsulta;
         private readonly IContextoPersistencia contextoPersistencia;
@@ -13,10 +13,9 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
             this.contextoPersistencia = contextoPersistencia;
         }
 
-
         public async Task<Result<Consulta>> InserirAsync(Consulta consulta)
         {
-            var resultadoValidacao = ValidarConsulta(consulta);
+            var resultadoValidacao = Validar(consulta);
 
             if (resultadoValidacao.IsFailed)
                 return Result.Fail(resultadoValidacao.Errors);
@@ -30,7 +29,7 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
 
         public async Task<Result<Consulta>> EditarAsync(Consulta consulta)
         {
-            var resultadoValidacao = ValidarConsulta(consulta);
+            var resultadoValidacao = Validar(consulta);
 
             if (resultadoValidacao.IsFailed)
                 return Result.Fail(resultadoValidacao.Errors);
@@ -45,6 +44,9 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
         public async Task<Result<Consulta>> ExcluirAsync(Guid id)
         {
             var consulta = await repositorioConsulta.SelecionarPorIdAsync(id);
+
+            if (consulta == null)
+                return Result.Fail("Consulta não encontrado.");
 
             repositorioConsulta.Excluir(consulta);
 
@@ -64,25 +66,10 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
         {
             var consulta = await repositorioConsulta.SelecionarPorIdAsync(id);
 
+            if (consulta == null)
+                return Result.Fail("Consulta não encontrado.");
+
             return Result.Ok(consulta);
-        }
-
-
-        private Result ValidarConsulta(Consulta consulta)
-        {
-            ValidadorConsulta validador = new ValidadorConsulta();
-
-            var resultadoValidacao = validador.Validate(consulta);
-
-            List<Error> erros = new List<Error>();
-
-            foreach (var erro in resultadoValidacao.Errors)
-                erros.Add(new Error(erro.ErrorMessage));
-
-            if (erros.Any())
-                return Result.Fail(erros.ToArray());
-
-            return Result.Ok();
         }
     }
 }

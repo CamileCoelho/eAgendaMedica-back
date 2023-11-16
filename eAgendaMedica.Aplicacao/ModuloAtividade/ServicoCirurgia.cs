@@ -1,9 +1,8 @@
-﻿using eAgendaMedica.Dominio.Compartilhado;
-using eAgendaMedica.Dominio.ModuloAtividade;
+﻿using eAgendaMedica.Dominio.ModuloAtividade;
 
 namespace eAgendaMedica.Aplicacao.ModuloAtividade
 {
-    public class ServicoCirurgia
+    public class ServicoCirurgia : ServicoBase<Cirurgia, ValidadorCirurgia>
     {
         private readonly IRepositorioCirurgia repositorioCirurgia;
         private readonly IContextoPersistencia contextoPersistencia;
@@ -14,10 +13,9 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
             this.contextoPersistencia = contextoPersistencia;
         }
 
-
         public async Task<Result<Cirurgia>> InserirAsync(Cirurgia cirurgia)
         {
-            var resultadoValidacao = ValidarCirurgia(cirurgia);
+            var resultadoValidacao = Validar(cirurgia);
 
             if (resultadoValidacao.IsFailed)
                 return Result.Fail(resultadoValidacao.Errors);
@@ -31,7 +29,7 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
 
         public async Task<Result<Cirurgia>> EditarAsync(Cirurgia cirurgia)
         {
-            var resultadoValidacao = ValidarCirurgia(cirurgia);
+            var resultadoValidacao = Validar(cirurgia);
 
             if (resultadoValidacao.IsFailed)
                 return Result.Fail(resultadoValidacao.Errors);
@@ -46,6 +44,9 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
         public async Task<Result<Cirurgia>> ExcluirAsync(Guid id)
         {
             var cirurgia = await repositorioCirurgia.SelecionarPorIdAsync(id);
+
+            if (cirurgia == null)
+                return Result.Fail("Cirurgia não encontrado.");
 
             repositorioCirurgia.Excluir(cirurgia);
 
@@ -65,25 +66,10 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
         {
             var cirurgia = await repositorioCirurgia.SelecionarPorIdAsync(id);
 
+            if (cirurgia == null)
+                return Result.Fail("Cirurgia não encontrado.");
+
             return Result.Ok(cirurgia);
-        }
-
-
-        private Result ValidarCirurgia(Cirurgia cirurgia)
-        {
-            ValidadorCirurgia validador = new ValidadorCirurgia();
-
-            var resultadoValidacao = validador.Validate(cirurgia);
-
-            List<Error> erros = new List<Error>();
-
-            foreach (var erro in resultadoValidacao.Errors)
-                erros.Add(new Error(erro.ErrorMessage));
-
-            if (erros.Any())
-                return Result.Fail(erros.ToArray());
-
-            return Result.Ok();
         }
     }
 }
