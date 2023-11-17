@@ -17,8 +17,7 @@ namespace eAgendaMedica.WebApi.Config.AutoMapperConfig
             CreateMap<FormsConsultaViewModel, Consulta>()
                 .ForMember(destino => destino.Data, opt => opt.MapFrom(origem => origem.Data.ToShortDateString()))
                 .ForMember(destino => destino.HoraInicio, opt => opt.MapFrom(origem => origem.HoraInicio.ToString(@"hh\:mm")))
-                .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")))
-                .ForMember(destino => destino.Medico.Id, opt => opt.MapFrom(destino => destino.MedicoId));
+                .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")));
         }
 
         private void ConfigurarMapeamentoEntidadeParaViewModel()

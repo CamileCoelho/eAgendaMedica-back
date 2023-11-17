@@ -31,8 +31,7 @@ namespace eAgendaMedica.WebApi.Config.AutoMapperConfig
             CreateMap<Cirurgia, VisualizarCirurgiaViewModel>()
                 .ForMember(destino => destino.Data, opt => opt.MapFrom(origem => origem.Data.ToShortDateString()))
                 .ForMember(destino => destino.HoraInicio, opt => opt.MapFrom(origem => origem.HoraInicio.ToString(@"hh\:mm")))
-                .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")))
-                .ForMember(destino => destino.Medicos, opt => opt.MapFrom(destino => destino.Medicos));
+                .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")));
         }
     }
 }

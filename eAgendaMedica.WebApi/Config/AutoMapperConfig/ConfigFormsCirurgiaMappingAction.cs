@@ -15,10 +15,7 @@ namespace eAgendaMedica.WebApi.Config.AutoMapperConfig
 
         public void Process(FormsCirurgiaViewModel source, Cirurgia destination, ResolutionContext context)
         {
-            foreach (Guid id in source.MedicoIds)
-            {
-                destination.Medicos.Add(repositorioMedico.SelecionarPorId(id));
-            }
+            destination.Medicos.AddRange(repositorioMedico.SelecionarMuitos(source.MedicoIds));
         }
     }
 }

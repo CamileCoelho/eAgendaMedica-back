@@ -17,7 +17,7 @@ namespace eAgendaMedica.WebApi.Controllers
             this.mapeador = mapeador;
         }
 
-        [HttpGet("consultas")]
+        [HttpGet]
         [ProducesResponseType(typeof(ListarConsultaViewModel), 200)]
         [ProducesResponseType(typeof(string[]), 500)]
         public async Task<IActionResult> SelecionarTodasConsultas()
@@ -29,7 +29,7 @@ namespace eAgendaMedica.WebApi.Controllers
             return Ok(viewModel);
         }
 
-        [HttpGet("consultas/visualiacao-completa/{id}")]
+        [HttpGet("visualiacao-completa/{id}")]
         [ProducesResponseType(typeof(VisualizarConsultaViewModel), 200)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
@@ -45,7 +45,7 @@ namespace eAgendaMedica.WebApi.Controllers
             return Ok(viewModel);
         }
 
-        [HttpPost("consultas")]
+        [HttpPost]
         [ProducesResponseType(typeof(FormsConsultaViewModel), 200)]
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 404)]
@@ -62,7 +62,7 @@ namespace eAgendaMedica.WebApi.Controllers
             return Ok(viewModel);
         }
 
-        [HttpPut("consultas/{id}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(FormsConsultaViewModel), 200)]
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 404)]
@@ -84,7 +84,7 @@ namespace eAgendaMedica.WebApi.Controllers
             return Ok(viewModel);
         }
 
-        [HttpDelete("consultas/{id}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
