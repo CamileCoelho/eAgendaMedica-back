@@ -15,6 +15,8 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
             Data = DateTime.Now;
             HoraInicio = Data.TimeOfDay;
             HoraTermino = Data.TimeOfDay;
+            PeriodoRecuperacao = TimeSpan.FromMinutes(240);
+            Medicos = new List<Medico>();
         }
 
         public Cirurgia(DateTime data, TimeSpan horaInicio, TimeSpan horaTermino, List<Medico> medicos)

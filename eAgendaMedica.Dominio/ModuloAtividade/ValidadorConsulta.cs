@@ -21,7 +21,7 @@
             RuleFor(x => x.PeriodoRecuperacao)
                 .Equal(TimeSpan.FromMinutes(20));
 
-            RuleFor(x => x.Medico)
+            RuleFor(x => x.MedicoId)
                 .NotNull()
                 .NotEmpty();
         }

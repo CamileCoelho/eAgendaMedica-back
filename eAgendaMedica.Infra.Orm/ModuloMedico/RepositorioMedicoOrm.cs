@@ -8,7 +8,11 @@ namespace eAgendaMedica.Infra.Orm.ModuloMedico
     {
         public RepositorioMedicoOrm(IContextoPersistencia contextoPersistencia) : base(contextoPersistencia)
         {
+        }
 
+        public List<Medico> SelecionarMuitos(List<Guid> medicoIds)
+        {
+            return registros.Where(medico => medicoIds.Contains(medico.Id)).ToList();
         }
     }
 }

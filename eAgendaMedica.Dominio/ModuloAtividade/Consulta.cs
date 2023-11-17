@@ -9,12 +9,15 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
         public TimeSpan HoraTermino { get; set; }
         public TimeSpan PeriodoRecuperacao { get; set; }
         public Medico Medico { get; set; }
+        public Guid MedicoId { get; set; }
 
         public Consulta()
         {
             Data = DateTime.Now;
             HoraInicio = Data.TimeOfDay;
             HoraTermino = Data.TimeOfDay;
+            PeriodoRecuperacao = TimeSpan.FromMinutes(20);
+            Medico = new Medico();
         }
 
         public Consulta(DateTime data, TimeSpan horaInicio, TimeSpan horaTermino, Medico medico)
@@ -33,7 +36,7 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
             }
 
             HoraTermino = novaHora;
-            Medico = medico;        
+            Medico = medico;
         }
 
         public override void AtualizarInformacoes(Consulta registroAtualizado)

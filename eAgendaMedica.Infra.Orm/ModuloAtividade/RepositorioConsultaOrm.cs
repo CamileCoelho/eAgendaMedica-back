@@ -1,6 +1,7 @@
 ﻿using eAgendaMedica.Dominio.Compartilhado;
 using eAgendaMedica.Dominio.ModuloAtividade;
 using eAgendaMedica.Infra.Orm.Compartilhado;
+using Microsoft.EntityFrameworkCore;
 
 namespace eAgendaMedica.Infra.Orm.ModuloAtividade
 {
@@ -9,6 +10,21 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
         public RepositorioConsultaOrm(IContextoPersistencia contextoPersistencia) : base(contextoPersistencia)
         {
 
+        }
+
+        public override Consulta SelecionarPorId(Guid id)
+        {
+            return registros.Include(x => x.Medico).SingleOrDefault(x => x.Id == id);
+        }
+
+        public override async Task<Consulta> SelecionarPorIdAsync(Guid id)
+        {
+            return await registros.Include(x => x.Medico).SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public override async Task<List<Consulta>> SelecionarTodosAsync()
+        {
+            return await registros.Include(x => x.Medico).ToListAsync();
         }
 
         public List<Consulta> SelecionarAtividadesFuturas(DateTime dataInicial, DateTime dataFinal)
