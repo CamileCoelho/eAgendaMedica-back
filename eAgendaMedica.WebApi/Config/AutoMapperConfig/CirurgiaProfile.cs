@@ -15,7 +15,7 @@ namespace eAgendaMedica.WebApi.Config.AutoMapperConfig
         private void ConfigurarMapeamentoViewModelsParaEntidades()
         {
             CreateMap<FormsCirurgiaViewModel, Cirurgia>()
-                .ForMember(destino => destino.Data, opt => opt.MapFrom(origem => origem.Data.ToShortDateString()))
+                .ForMember(destino => destino.DataInicio, opt => opt.MapFrom(origem => origem.DataInicio.ToShortDateString()))
                 .ForMember(destino => destino.HoraInicio, opt => opt.MapFrom(origem => origem.HoraInicio.ToString(@"hh\:mm")))
                 .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")))
                 .AfterMap<ConfigFormsCirurgiaMappingAction>();
@@ -24,12 +24,14 @@ namespace eAgendaMedica.WebApi.Config.AutoMapperConfig
         private void ConfigurarMapeamentoEntidadeParaViewModel()
         {
             CreateMap<Cirurgia, ListarCirurgiaViewModel>()
-                .ForMember(destino => destino.Data, opt => opt.MapFrom(origem => origem.Data.ToShortDateString()))
+                .ForMember(destino => destino.DataInicio, opt => opt.MapFrom(origem => origem.DataInicio.ToShortDateString()))
+                .ForMember(destino => destino.DataTermino, opt => opt.MapFrom(origem => origem.DataTermino.ToShortDateString()))
                 .ForMember(destino => destino.HoraInicio, opt => opt.MapFrom(origem => origem.HoraInicio.ToString(@"hh\:mm")))
                 .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")));
 
             CreateMap<Cirurgia, VisualizarCirurgiaViewModel>()
-                .ForMember(destino => destino.Data, opt => opt.MapFrom(origem => origem.Data.ToShortDateString()))
+                .ForMember(destino => destino.DataInicio, opt => opt.MapFrom(origem => origem.DataInicio.ToShortDateString()))
+                .ForMember(destino => destino.DataTermino, opt => opt.MapFrom(origem => origem.DataTermino.ToShortDateString()))
                 .ForMember(destino => destino.HoraInicio, opt => opt.MapFrom(origem => origem.HoraInicio.ToString(@"hh\:mm")))
                 .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")));
         }

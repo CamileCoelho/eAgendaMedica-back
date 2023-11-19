@@ -50,7 +50,7 @@ namespace eAgendaMedica.WebApi.Controllers
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public async Task<IActionResult> InserirCirurgia(FormsCirurgiaViewModel viewModel)
+        public async Task<IActionResult> InserirAsync(FormsCirurgiaViewModel viewModel)
         {
             var cirurgia = mapeador.Map<Cirurgia>(viewModel);
 
@@ -67,7 +67,7 @@ namespace eAgendaMedica.WebApi.Controllers
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public async Task<IActionResult> EditarCirurgia(Guid id, FormsCirurgiaViewModel viewModel)
+        public async Task<IActionResult> EditarAsync(Guid id, FormsCirurgiaViewModel viewModel)
         {
             var selecacaoCirurgiaResult = await servicoCirurgia.SelecionarPorIdAsync(id);
 
@@ -88,7 +88,7 @@ namespace eAgendaMedica.WebApi.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public async Task<IActionResult> ExcluirCirurgia(Guid id)
+        public async Task<IActionResult> ExcluirAsync(Guid id)
         {
             var cirurgiaResult = await servicoCirurgia.ExcluirAsync(id);
 

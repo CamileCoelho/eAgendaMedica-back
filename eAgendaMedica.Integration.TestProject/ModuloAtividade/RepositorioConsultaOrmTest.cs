@@ -15,9 +15,9 @@ namespace eAgendaMedica.Integration.TestProject.ModuloAtividade
         {
             var medico = new Medico("Médico Consulta", "96478-PA", "Especialidade");
 
-            consultaInserir = new Consulta(DateTime.Now, TimeSpan.FromHours(8), TimeSpan.FromHours(9), medico);
-            consultaEditar = new Consulta(DateTime.Now, TimeSpan.FromHours(10), TimeSpan.FromHours(12), medico);
-            consultaExcluir = new Consulta(DateTime.Now, TimeSpan.FromHours(14), TimeSpan.FromHours(15), medico);
+            consultaInserir = new Consulta("", DateTime.Now, TimeSpan.FromHours(8), TimeSpan.FromHours(9), medico);
+            consultaEditar = new Consulta("", DateTime.Now, TimeSpan.FromHours(10), TimeSpan.FromHours(12), medico);
+            consultaExcluir = new Consulta("", DateTime.Now, TimeSpan.FromHours(14), TimeSpan.FromHours(15), medico);
         }
 
         [TestMethod]

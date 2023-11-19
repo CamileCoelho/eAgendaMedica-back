@@ -2,7 +2,8 @@
 {
     public class FormsCirurgiaViewModel
     {
-        public DateTime Data { get; set; }
+        public string? Detalhes { get; set; }
+        public DateTime DataInicio { get; set; }
         public TimeSpan HoraInicio { get; set; }
         public TimeSpan HoraTermino { get; set; }
         public List<Guid> MedicoIds { get; set; }

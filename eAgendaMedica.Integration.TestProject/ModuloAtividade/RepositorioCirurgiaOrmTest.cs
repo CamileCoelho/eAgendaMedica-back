@@ -13,9 +13,9 @@ namespace eAgendaMedica.Integration.TestProject.ModuloAtividade
 
         public RepositorioCirurgiaOrmTest()
         {
-            cirurgiaInserir = new Cirurgia(DateTime.Now, TimeSpan.FromHours(8), TimeSpan.FromHours(12), new List<Medico>());
-            cirurgiaEditar = new Cirurgia(DateTime.Now, TimeSpan.FromHours(14), TimeSpan.FromHours(18), new List<Medico>());
-            cirurgiaExcluir = new Cirurgia(DateTime.Now, TimeSpan.FromHours(20), TimeSpan.FromHours(22), new List<Medico>());
+            cirurgiaInserir = new Cirurgia("", DateTime.Now, TimeSpan.FromHours(8), TimeSpan.FromHours(12), new List<Medico>());
+            cirurgiaEditar = new Cirurgia("", DateTime.Now, TimeSpan.FromHours(14), TimeSpan.FromHours(18), new List<Medico>());
+            cirurgiaExcluir = new Cirurgia("", DateTime.Now, TimeSpan.FromHours(20), TimeSpan.FromHours(22), new List<Medico>());
         }
 
         [TestMethod]

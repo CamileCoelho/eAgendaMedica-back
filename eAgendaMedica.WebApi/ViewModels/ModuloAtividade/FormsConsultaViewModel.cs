@@ -4,7 +4,8 @@ namespace eAgendaMedica.WebApi.ViewModels.ModuloAtividade
 {
     public class FormsConsultaViewModel
     {
-        public DateTime Data { get; set; }
+        public string? Detalhes { get; set; }
+        public DateTime DataInicio { get; set; }
         public TimeSpan HoraInicio { get; set; }
         public TimeSpan HoraTermino { get; set; }
         public Guid MedicoId { get; set; }

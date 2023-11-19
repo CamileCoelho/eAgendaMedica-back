@@ -30,15 +30,15 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
         public List<Consulta> SelecionarAtividadesFuturas(DateTime dataInicial, DateTime dataFinal)
         {
             return registros
-              .Where(x => x.Data >= dataInicial)
-              .Where(x => x.Data <= dataFinal)
+              .Where(x => x.DataInicio >= dataInicial)
+              .Where(x => x.DataInicio <= dataFinal)
               .ToList();
         }
 
         public List<Consulta> SelecionarAtividadesPassadas(DateTime dataDeHoje)
         {
             return registros
-               .Where(x => x.Data < dataDeHoje)
+               .Where(x => x.DataInicio < dataDeHoje)
                .ToList();
         }
     }

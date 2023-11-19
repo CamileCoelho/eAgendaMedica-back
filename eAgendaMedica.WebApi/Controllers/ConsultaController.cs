@@ -22,9 +22,9 @@ namespace eAgendaMedica.WebApi.Controllers
         [ProducesResponseType(typeof(string[]), 500)]
         public async Task<IActionResult> SelecionarTodasConsultas()
         {
-            var categoriasResult = await servicoConsulta.SelecionarTodosAsync();
+            var consultasResult = await servicoConsulta.SelecionarTodosAsync();
 
-            var viewModel = mapeador.Map<List<ListarConsultaViewModel>>(categoriasResult.Value);
+            var viewModel = mapeador.Map<List<ListarConsultaViewModel>>(consultasResult.Value);
 
             return Ok(viewModel);
         }
@@ -35,12 +35,12 @@ namespace eAgendaMedica.WebApi.Controllers
         [ProducesResponseType(typeof(string[]), 500)]
         public async Task<IActionResult> SelecionarConsultaPorId(Guid id)
         {
-            var categoriaResult = await servicoConsulta.SelecionarPorIdAsync(id);
+            var consultaResult = await servicoConsulta.SelecionarPorIdAsync(id);
 
-            if (categoriaResult.IsFailed)
-                return NotFound(categoriaResult.Errors);
+            if (consultaResult.IsFailed)
+                return NotFound(consultaResult.Errors);
 
-            var viewModel = mapeador.Map<VisualizarConsultaViewModel>(categoriaResult.Value);
+            var viewModel = mapeador.Map<VisualizarConsultaViewModel>(consultaResult.Value);
 
             return Ok(viewModel);
         }
@@ -50,14 +50,14 @@ namespace eAgendaMedica.WebApi.Controllers
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public async Task<IActionResult> InserirConsulta(FormsConsultaViewModel viewModel)
+        public async Task<IActionResult> InserirAsync(FormsConsultaViewModel viewModel)
         {
-            var categoria = mapeador.Map<Consulta>(viewModel);
+            var consulta = mapeador.Map<Consulta>(viewModel);
 
-            var categoriaResult = await servicoConsulta.InserirAsync(categoria);
+            var consultaResult = await servicoConsulta.InserirAsync(consulta);
 
-            if (categoriaResult.IsFailed)
-                return BadRequest(categoriaResult.Errors);
+            if (consultaResult.IsFailed)
+                return BadRequest(consultaResult.Errors);
 
             return Ok(viewModel);
         }
@@ -67,19 +67,19 @@ namespace eAgendaMedica.WebApi.Controllers
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public async Task<IActionResult> EditarConsulta(Guid id, FormsConsultaViewModel viewModel)
+        public async Task<IActionResult> EditarAsync(Guid id, FormsConsultaViewModel viewModel)
         {
             var selecacaoConsultaResult = await servicoConsulta.SelecionarPorIdAsync(id);
 
             if (selecacaoConsultaResult.IsFailed)
                 return NotFound(selecacaoConsultaResult.Errors);
 
-            var categoria = mapeador.Map(viewModel, selecacaoConsultaResult.Value);
+            var consulta = mapeador.Map(viewModel, selecacaoConsultaResult.Value);
 
-            var categoriaResult = await servicoConsulta.EditarAsync(categoria);
+            var consultaResult = await servicoConsulta.EditarAsync(consulta);
 
-            if (categoriaResult.IsFailed)
-                return BadRequest(categoriaResult.Errors);
+            if (consultaResult.IsFailed)
+                return BadRequest(consultaResult.Errors);
 
             return Ok(viewModel);
         }
@@ -88,12 +88,12 @@ namespace eAgendaMedica.WebApi.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public async Task<IActionResult> ExcluirConsulta(Guid id)
+        public async Task<IActionResult> ExcluirAsync(Guid id)
         {
-            var categoriaResult = await servicoConsulta.ExcluirAsync(id);
+            var consultaResult = await servicoConsulta.ExcluirAsync(id);
 
-            if (categoriaResult.IsFailed)
-                return NotFound(categoriaResult.Errors);
+            if (consultaResult.IsFailed)
+                return NotFound(consultaResult.Errors);
 
             return Ok();
         }
