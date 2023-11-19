@@ -9,6 +9,7 @@
                 config.AddProfile<MedicoProfile>();
                 config.AddProfile<CirurgiaProfile>();
                 config.AddProfile<ConsultaProfile>();
+                config.AddProfile<UsuarioProfile>();
             });
         }
     }

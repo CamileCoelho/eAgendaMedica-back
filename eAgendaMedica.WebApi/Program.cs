@@ -6,16 +6,18 @@ namespace eAgendaMedica.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.ConfigurarControllers();
+
             builder.Services.Configure<ApiBehaviorOptions>(config =>
             {
                 config.SuppressModelStateInvalidFilter = true;
             });
 
+            builder.Services.ConfigurarIdentity();
             builder.Services.ConfigurarSerilog(builder.Logging);
             builder.Services.ConfigurarAutoMapper();
             builder.Services.ConfigurarInjecaoDependencia(builder.Configuration);
             builder.Services.ConfigurarSwagger();
-            builder.Services.ConfigurarControllers();
 
             var app = builder.Build();
 

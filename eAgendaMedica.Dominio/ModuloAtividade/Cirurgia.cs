@@ -4,7 +4,9 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
 {
     public class Cirurgia : EntidadeBase<Cirurgia>
     {
-        public DateTime Data { get; set; }
+        public string? Detalhes { get; set; }
+        public DateTime DataInicio { get; set; }
+        public DateTime DataTermino { get; set; }
         public TimeSpan HoraInicio { get; set; }
         public TimeSpan HoraTermino { get; set; }
         public TimeSpan PeriodoRecuperacao { get; set; }
@@ -12,16 +14,19 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
 
         public Cirurgia()
         {
-            Data = DateTime.Now;
-            HoraInicio = Data.TimeOfDay;
-            HoraTermino = Data.TimeOfDay;
+            DataInicio = DateTime.Now;
+            DataTermino = DataInicio;
+            HoraInicio = DataInicio.TimeOfDay;
+            HoraTermino = DataInicio.TimeOfDay;
             PeriodoRecuperacao = TimeSpan.FromMinutes(240);
             Medicos = new List<Medico>();
         }
 
-        public Cirurgia(DateTime data, TimeSpan horaInicio, TimeSpan horaTermino, List<Medico> medicos)
+        public Cirurgia(string? detalhes, DateTime data, TimeSpan horaInicio, TimeSpan horaTermino, List<Medico> medicos)
         {
-            Data = data;
+            Detalhes = detalhes;
+            DataInicio = data;
+            DataTermino = data;
             HoraInicio = horaInicio;
             HoraTermino = horaTermino;
             PeriodoRecuperacao = TimeSpan.FromMinutes(240);
@@ -30,7 +35,7 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
 
             while (novaHora.TotalHours >= 24)
             {
-                Data = Data.AddDays(1);
+                DataTermino = DataTermino.AddDays(1);
                 novaHora = novaHora.Subtract(TimeSpan.FromHours(24));
             }
 
@@ -40,31 +45,13 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
 
         public override void AtualizarInformacoes(Cirurgia registroAtualizado)
         {
-            Data = registroAtualizado.Data;
+            Detalhes = registroAtualizado.Detalhes;
+            DataInicio = registroAtualizado.DataInicio;
+            DataTermino = registroAtualizado.DataTermino;
             HoraInicio = registroAtualizado.HoraInicio;
             HoraTermino = registroAtualizado.HoraTermino;
             PeriodoRecuperacao = registroAtualizado.PeriodoRecuperacao;
             Medicos = registroAtualizado.Medicos;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            Cirurgia other = (Cirurgia)obj;
-            return this.Data == other.Data &&
-                   this.HoraInicio == other.HoraInicio &&
-                   this.HoraTermino == other.HoraTermino &&
-                   this.PeriodoRecuperacao == other.PeriodoRecuperacao &&
-                   this.Medicos.SequenceEqual(other.Medicos);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Data, HoraInicio, HoraTermino, PeriodoRecuperacao, Medicos);
         }
     }
 }

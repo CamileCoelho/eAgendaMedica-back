@@ -29,7 +29,7 @@ namespace eAgendaMedica.WebApi.Config
             services.AddScoped<IRepositorioCirurgia, RepositorioCirurgiaOrm>();
             services.AddTransient<ServicoCirurgia>();
 
-            services.AddTransient<ConfigFormsCirurgiaMappingAction>();
+            services.AddTransient<ConfigFormsConsultaMappingAction>();
         }
     }
 }

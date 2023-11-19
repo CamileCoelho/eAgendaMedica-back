@@ -15,6 +15,7 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
 
         public async Task<Result<Consulta>> InserirAsync(Consulta consulta)
         {
+            //validar também se existe um CRM válido, para pode passar uma mensagem de erro condizente
             var resultadoValidacao = Validar(consulta);
 
             if (resultadoValidacao.IsFailed)

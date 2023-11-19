@@ -4,7 +4,9 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
 {
     public class Consulta : EntidadeBase<Consulta>
     {
-        public DateTime Data { get; set; }
+        public string? Detalhes { get; set; }
+        public DateTime DataInicio { get; set; }
+        public DateTime DataTermino { get; set; }
         public TimeSpan HoraInicio { get; set; }
         public TimeSpan HoraTermino { get; set; }
         public TimeSpan PeriodoRecuperacao { get; set; }
@@ -13,16 +15,19 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
 
         public Consulta()
         {
-            Data = DateTime.Now;
-            HoraInicio = Data.TimeOfDay;
-            HoraTermino = Data.TimeOfDay;
+            DataInicio = DateTime.Now;
+            DataTermino = DataInicio;
+            HoraInicio = DataInicio.TimeOfDay;
+            HoraTermino = DataInicio.TimeOfDay;
             PeriodoRecuperacao = TimeSpan.FromMinutes(20);
             Medico = new Medico();
         }
 
-        public Consulta(DateTime data, TimeSpan horaInicio, TimeSpan horaTermino, Medico medico)
+        public Consulta(string? detalhes, DateTime data, TimeSpan horaInicio, TimeSpan horaTermino, Medico medico)
         {
-            Data = data;
+            Detalhes = detalhes;
+            DataInicio = data; 
+            DataTermino = data;
             HoraInicio = horaInicio;
             HoraTermino = horaTermino;
             PeriodoRecuperacao = TimeSpan.FromMinutes(20);
@@ -31,7 +36,7 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
 
             while (novaHora.TotalHours >= 24)
             {
-                Data = Data.AddDays(1);
+                DataTermino = DataTermino.AddDays(1);
                 novaHora = novaHora.Subtract(TimeSpan.FromHours(24));
             }
 
@@ -41,7 +46,9 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
 
         public override void AtualizarInformacoes(Consulta registroAtualizado)
         {
-            Data = registroAtualizado.Data;
+            Detalhes = registroAtualizado.Detalhes;
+            DataInicio = registroAtualizado.DataInicio;
+            DataTermino = registroAtualizado.DataTermino;
             HoraInicio = registroAtualizado.HoraInicio;
             HoraTermino = registroAtualizado.HoraTermino;
             PeriodoRecuperacao = registroAtualizado.PeriodoRecuperacao;

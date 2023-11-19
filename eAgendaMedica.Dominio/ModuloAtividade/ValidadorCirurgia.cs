@@ -4,7 +4,7 @@
     {
         public ValidadorCirurgia()
         {
-            RuleFor(x => x.Data)
+            RuleFor(x => x.DataInicio)
                .NotNull()
                .NotEmpty();
 
