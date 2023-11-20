@@ -11,6 +11,8 @@
                 config.AddProfile<ConsultaProfile>();
                 config.AddProfile<UsuarioProfile>();
             });
+
+            services.AddTransient<UsuarioResolver>();   
         }
     }
 }

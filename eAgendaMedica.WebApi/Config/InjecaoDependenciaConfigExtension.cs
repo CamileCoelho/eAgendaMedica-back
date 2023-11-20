@@ -20,6 +20,8 @@ namespace eAgendaMedica.WebApi.Config
                 optionsBuilder.UseSqlServer(connectionString);
             });
 
+            services.AddTransient<ITenantProvider, ApiTenantProvider>();
+
             services.AddScoped<IRepositorioMedico, RepositorioMedicoOrm>();
             services.AddTransient<ServicoMedico>();
 
@@ -30,6 +32,7 @@ namespace eAgendaMedica.WebApi.Config
             services.AddTransient<ServicoCirurgia>();
 
             services.AddTransient<ConfigFormsConsultaMappingAction>();
+            services.AddTransient<ConfigFormsCirurgiaMappingAction>();
         }
     }
 }

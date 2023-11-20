@@ -6,21 +6,18 @@ namespace eAgendaMedica.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.ConfigurarControllers();
-
-            builder.Services.Configure<ApiBehaviorOptions>(config =>
-            {
-                config.SuppressModelStateInvalidFilter = true;
-            });
-
+            builder.Services.ConfigurarValidacao();
             builder.Services.ConfigurarIdentity();
             builder.Services.ConfigurarSerilog(builder.Logging);
             builder.Services.ConfigurarAutoMapper();
             builder.Services.ConfigurarInjecaoDependencia(builder.Configuration);
             builder.Services.ConfigurarSwagger();
+            builder.Services.ConfigurarControllers();
+            builder.Services.ConfigurarJwt();
 
             var app = builder.Build();
 
+            app.MigrateDatabase();
             app.UseMiddleware<ManipuladorDeExcecoes>();
 
             if (app.Environment.IsDevelopment())
@@ -30,6 +27,7 @@ namespace eAgendaMedica.WebApi
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
             app.Run();

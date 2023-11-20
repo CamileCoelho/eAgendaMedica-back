@@ -18,6 +18,7 @@ namespace eAgendaMedica.WebApi.Config.AutoMapperConfig
                 .ForMember(destino => destino.DataInicio, opt => opt.MapFrom(origem => origem.DataInicio.ToShortDateString()))
                 .ForMember(destino => destino.HoraInicio, opt => opt.MapFrom(origem => origem.HoraInicio.ToString(@"hh\:mm")))
                 .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")))
+                .ForMember(dest => dest.UsuarioId, opt => opt.MapFrom<UsuarioResolver>())
                 .AfterMap<ConfigFormsConsultaMappingAction>();
         }
 

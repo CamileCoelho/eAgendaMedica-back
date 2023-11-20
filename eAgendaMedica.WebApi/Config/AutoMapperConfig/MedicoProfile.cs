@@ -7,11 +7,12 @@ namespace eAgendaMedica.WebApi.Config.AutoMapperConfig
     {
         public MedicoProfile()
         {
+            CreateMap<FormsMedicoViewModel, Medico>()
+                .ForMember(dest => dest.UsuarioId, opt => opt.MapFrom<UsuarioResolver>());
+
             CreateMap<Medico, ListarMedicoViewModel>();
 
             CreateMap<Medico, VisualizarMedicoViewModel>();
-
-            CreateMap<FormsMedicoViewModel, Medico>();
         }
     }
 }

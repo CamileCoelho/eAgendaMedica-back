@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace eAgendaMedica.WebApi
+namespace eAgendaMedica.WebApi.Config
 {
     public class eAgendaMedicaErrorDescriber : IdentityErrorDescriber
     {
@@ -49,7 +49,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(InvalidUserName),
-                Description = $"."
+                Description = $"Login '{userName}' é inválido, pode conter apenas letras ou digitos."
             };
         }
         public override IdentityError InvalidEmail(string email)
@@ -57,7 +57,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(InvalidEmail),
-                Description = $"."
+                Description = $"Email '{email}' é inválido."
             };
         }
         public override IdentityError DuplicateUserName(string userName)
@@ -65,7 +65,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(DuplicateUserName),
-                Description = $"."
+                Description = $"Login '{userName}' já está sendo utilizado."
             };
         }
         public override IdentityError DuplicateEmail(string email)
@@ -73,7 +73,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(DuplicateEmail),
-                Description = $"."      
+                Description = $"Email '{email}' já está sendo utilizado."
             };
         }
         public override IdentityError InvalidRoleName(string role)
@@ -81,7 +81,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(InvalidRoleName),
-                Description = $"."
+                Description = $"A permição '{role}' é inválida."
             };
         }
         public override IdentityError DuplicateRoleName(string role)
@@ -89,7 +89,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(DuplicateRoleName),
-                Description = $"."
+                Description = $"A permição '{role}' já está sendo utilizada."
             };
         }
         public override IdentityError UserAlreadyHasPassword()
@@ -97,7 +97,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(UserAlreadyHasPassword),
-                Description = $"."
+                Description = $"Usuário já possuí uma senha definida."
             };
         }
         public override IdentityError UserLockoutNotEnabled()
@@ -105,7 +105,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(UserLockoutNotEnabled),
-                Description = $"."
+                Description = $"Lockout não está habilitado para esse usuário."
             };
         }
         public override IdentityError UserAlreadyInRole(string role)
@@ -113,7 +113,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(UserAlreadyInRole),
-                Description = $"."
+                Description = $"Usuário já possuí a permição '{role}'."
             };
         }
         public override IdentityError UserNotInRole(string role)
@@ -121,7 +121,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(UserNotInRole),
-                Description = $"."
+                Description = $"Usuário mão possuí a permição '{role}'."
             };
         }
         public override IdentityError PasswordTooShort(int length)
@@ -129,7 +129,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(PasswordTooShort),
-                Description = $"."
+                Description = $"Senhas devem conter ao menos '{length}' caracteres."
             };
         }
         public override IdentityError PasswordRequiresUniqueChars(int uniqueChars)
@@ -137,7 +137,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(PasswordRequiresUniqueChars),
-                Description = $"."
+                Description = $"Senhas devem conter ao menos um '{uniqueChars}'."
             };
         }
         public override IdentityError PasswordRequiresNonAlphanumeric()
@@ -145,7 +145,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(PasswordRequiresNonAlphanumeric),
-                Description = $"."
+                Description = $"Senhas devem conter ao menos um caracter não alfanumérico."
             };
         }
         public override IdentityError PasswordRequiresDigit()
@@ -153,7 +153,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(PasswordRequiresDigit),
-                Description = $"."
+                Description = $"Senhas devem conter ao menos um digito ('0' - '9')."
             };
         }
         public override IdentityError PasswordRequiresLower()
@@ -161,7 +161,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(PasswordRequiresLower),
-                Description = $"."
+                Description = $"Senhas devem conter ao menos um caracter em caixa baixa ('a' - 'z')."
             };
         }
         public override IdentityError PasswordRequiresUpper()
@@ -169,7 +169,7 @@ namespace eAgendaMedica.WebApi
             return new IdentityError
             {
                 Code = nameof(PasswordRequiresUpper),
-                Description = $"."
+                Description = $"Senhas devem conter ao menos um caracter em caixa alta ('A' - 'Z')."
             };
         }
     }

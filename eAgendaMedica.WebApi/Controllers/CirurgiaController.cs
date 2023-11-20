@@ -1,11 +1,13 @@
 ﻿using eAgendaMedica.WebApi.ViewModels.ModuloAtividade;
 using eAgendaMedica.Aplicacao.ModuloAtividade;
 using eAgendaMedica.Dominio.ModuloAtividade;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eAgendaMedica.WebApi.Controllers
 {
     [Route("api/atividades/cirurgias")]
     [ApiController]
+    [Authorize]
     public class CirurgiaController : ApiControllerBase
     {
         private readonly ServicoCirurgia servicoCirurgia;
@@ -15,34 +17,6 @@ namespace eAgendaMedica.WebApi.Controllers
         {
             this.servicoCirurgia = servicoCirurgia;
             this.mapeador = mapeador;
-        }
-
-        [HttpGet]
-        [ProducesResponseType(typeof(ListarCirurgiaViewModel), 200)]
-        [ProducesResponseType(typeof(string[]), 500)]
-        public async Task<IActionResult> SelecionarTodasCirurgias()
-        {
-            var cirurgiasResult = await servicoCirurgia.SelecionarTodosAsync();
-
-            var viewModel = mapeador.Map<List<ListarCirurgiaViewModel>>(cirurgiasResult.Value);
-
-            return Ok(viewModel);
-        }
-
-        [HttpGet("visualiacao-completa/{id}")]
-        [ProducesResponseType(typeof(VisualizarCirurgiaViewModel), 200)]
-        [ProducesResponseType(typeof(string[]), 404)]
-        [ProducesResponseType(typeof(string[]), 500)]
-        public async Task<IActionResult> SelecionarCirurgiaPorId(Guid id)
-        {
-            var cirurgiaResult = await servicoCirurgia.SelecionarPorIdAsync(id);
-
-            if (cirurgiaResult.IsFailed)
-                return NotFound(cirurgiaResult.Errors);
-
-            var viewModel = mapeador.Map<VisualizarCirurgiaViewModel>(cirurgiaResult.Value);
-
-            return Ok(viewModel);
         }
 
         [HttpPost]
@@ -96,6 +70,34 @@ namespace eAgendaMedica.WebApi.Controllers
                 return NotFound(cirurgiaResult.Errors);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(ListarCirurgiaViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> SelecionarTodas()
+        {
+            var cirurgiasResult = await servicoCirurgia.SelecionarTodosAsync();
+
+            var viewModel = mapeador.Map<List<ListarCirurgiaViewModel>>(cirurgiasResult.Value);
+
+            return Ok(viewModel);
+        }
+
+        [HttpGet("visualiacao-completa/{id}")]
+        [ProducesResponseType(typeof(VisualizarCirurgiaViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 404)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> SelecionarPorId(Guid id)
+        {
+            var cirurgiaResult = await servicoCirurgia.SelecionarPorIdAsync(id);
+
+            if (cirurgiaResult.IsFailed)
+                return NotFound(cirurgiaResult.Errors);
+
+            var viewModel = mapeador.Map<VisualizarCirurgiaViewModel>(cirurgiaResult.Value);
+
+            return Ok(viewModel);
         }
     }
 }

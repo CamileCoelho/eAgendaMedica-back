@@ -9,7 +9,7 @@ namespace eAgendaMedica.WebApi.Config.AutoMapperConfig
         {
             CreateMap<RegistrarUsuarioViewModel, Usuario>()
                 .ForMember(destino => destino.EmailConfirmed, opt => opt.MapFrom(origem => true))
-                .ForMember(destino => destino.UserName, opt => opt.MapFrom(origem => origem.Email));
+                .ForMember(destino => destino.UserName, opt => opt.MapFrom(origem => origem.Login));
         }
     }
 }

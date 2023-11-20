@@ -9,7 +9,7 @@ namespace eAgendaMedica.WebApi.Config
         public static void ConfigurarIdentity(this IServiceCollection services)
         {
             services.AddTransient<ServicoAutenticacao>();
-            services.AddTransient<AspNetUserManager<Usuario>>();
+            //services.AddTransient<AspNetUserManager<Usuario>>();
 
             services.AddIdentity<Usuario, IdentityRole<Guid>>(options =>
             {

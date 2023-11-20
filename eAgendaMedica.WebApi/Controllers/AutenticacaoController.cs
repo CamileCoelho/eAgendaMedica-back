@@ -25,9 +25,11 @@ namespace eAgendaMedica.WebApi.Controllers
             var usuarioResult = await servicoAutenticacao.RegistrarAsync(usuario, usuarioViewModel.Senha);
 
             if (usuarioResult.IsFailed)
-                return NotFound(usuarioResult.Errors);
+                return BadRequest(usuarioResult.Errors);
 
-            return Ok(usuarioViewModel);
+            var tokenVM = usuarioResult.Value.GerarJwt(DateTime.Now.AddDays(7));
+
+            return Ok(tokenVM);
         }
 
         [HttpPost("autenticar")]
@@ -36,9 +38,11 @@ namespace eAgendaMedica.WebApi.Controllers
             var usuarioResult = await servicoAutenticacao.AutenticarAsync(usuarioViewModel.Login, usuarioViewModel.Senha);
 
             if (usuarioResult.IsFailed)
-                return NotFound(usuarioResult.Errors);
+                return BadRequest(usuarioResult.Errors);
+            
+            var tokenVM = usuarioResult.Value.GerarJwt(DateTime.Now.AddDays(7));
 
-            return Ok(usuarioViewModel);
+            return Ok(tokenVM);
         }
 
         [HttpPost("sair")]

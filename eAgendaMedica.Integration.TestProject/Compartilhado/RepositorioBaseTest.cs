@@ -13,10 +13,7 @@ namespace eAgendaMedica.Integration.TestProject.Compartilhado
 
             dbContext = new eAgendaMedicaDbContext(optionsBuilder.Options);
 
-            var qtdMigracoesPendentes = dbContext.Database.GetPendingMigrations().Count();
-
-            if (qtdMigracoesPendentes != 0)
-                dbContext.Database.Migrate();
+            dbContext.Database.Migrate();
         }
     }
 }
