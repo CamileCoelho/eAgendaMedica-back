@@ -44,7 +44,9 @@ namespace eAgendaMedica.Aplicacao.ModuloAutenticacao
             if (erros.Count > 0)
                 return Result.Fail(erros);
 
-            return Result.Ok();
+            var usuario = await userManeger.FindByNameAsync(userName);
+
+            return Result.Ok(usuario);
         }
 
         public async Task<Result<Usuario>> SairAsync()
