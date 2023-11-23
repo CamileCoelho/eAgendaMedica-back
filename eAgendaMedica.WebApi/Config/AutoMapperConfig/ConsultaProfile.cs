@@ -37,6 +37,13 @@ namespace eAgendaMedica.WebApi.Config.AutoMapperConfig
                 .ForMember(destino => destino.HoraInicio, opt => opt.MapFrom(origem => origem.HoraInicio.ToString(@"hh\:mm")))
                 .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")))
                 .ForMember(destino => destino.Medico, opt => opt.MapFrom(destino => destino.Medico));
+
+            CreateMap<Consulta, FormsConsultaViewModel>()
+               .ForMember(destino => destino.DataInicio, opt => opt.MapFrom(origem => origem.DataInicio.ToShortDateString()))
+               .ForMember(destino => destino.HoraInicio, opt => opt.MapFrom(origem => origem.HoraInicio.ToString(@"hh\:mm")))
+               .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")))
+               .ForMember(destino => destino.MedicoId, opt => opt.MapFrom(destino => destino.MedicoId));
+
         }
     }
 }

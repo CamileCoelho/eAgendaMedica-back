@@ -9,7 +9,7 @@ namespace eAgendaMedica.WebApi.Controllers
     [Route("api/atividades/consultas")]
     [ApiController]
     [Authorize]
-    public class ConsultaController : ControllerBase
+    public class ConsultaController : ApiControllerBase
     {
         private readonly ServicoConsulta servicoConsulta;
         private readonly IMapper mapeador;
@@ -85,11 +85,27 @@ namespace eAgendaMedica.WebApi.Controllers
             return Ok(viewModel);
         }
 
-        [HttpGet("visualiacao-completa/{id}")]
-        [ProducesResponseType(typeof(VisualizarConsultaViewModel), 200)]
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(FormsConsultaViewModel), 200)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
         public async Task<IActionResult> SelecionarPorId(Guid id)
+        {
+            var consultaResult = await servicoConsulta.SelecionarPorIdAsync(id);
+
+            if (consultaResult.IsFailed)
+                return NotFound(consultaResult.Errors);
+
+            var viewModel = mapeador.Map<FormsConsultaViewModel>(consultaResult.Value);
+
+            return Ok(viewModel);
+        }
+
+        [HttpGet("visualizacao-completa/{id}")]
+        [ProducesResponseType(typeof(VisualizarConsultaViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 404)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> SelecionarCompletaPorId(Guid id)
         {
             var consultaResult = await servicoConsulta.SelecionarPorIdAsync(id);
 

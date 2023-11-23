@@ -14,6 +14,7 @@ namespace eAgendaMedica.WebApi
             builder.Services.ConfigurarSwagger();
             builder.Services.ConfigurarControllers();
             builder.Services.ConfigurarJwt();
+            builder.Services.ConfigurarCors("Desenvolvimento");
 
             var app = builder.Build();
 
@@ -27,6 +28,7 @@ namespace eAgendaMedica.WebApi
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("Desenvolvimento");
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();

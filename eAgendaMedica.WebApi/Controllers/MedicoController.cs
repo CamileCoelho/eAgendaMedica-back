@@ -2,7 +2,6 @@
 using eAgendaMedica.Dominio.ModuloMedico;
 using eAgendaMedica.WebApi.ViewModels.ModuloMedico;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 
 namespace eAgendaMedica.WebApi.Controllers
 {
@@ -85,8 +84,24 @@ namespace eAgendaMedica.WebApi.Controllers
             return Ok(viewModel);
         }
 
-        [HttpGet("visualiacao-completa/{id}")]
+        [HttpGet("visualizacao-completa/{id}")]
         [ProducesResponseType(typeof(VisualizarMedicoViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 404)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> SelecionarCompletoPorId(Guid id)
+        {
+            var medicoResult = await servicoMedico.SelecionarPorIdAsync(id);
+
+            if (medicoResult.IsFailed)
+                return NotFound(medicoResult.Errors);
+
+            var viewModel = mapeador.Map<VisualizarMedicoViewModel>(medicoResult.Value);
+
+            return Ok(viewModel);
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(FormsMedicoViewModel), 200)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
         public async Task<IActionResult> SelecionarPorId(Guid id)
@@ -96,7 +111,7 @@ namespace eAgendaMedica.WebApi.Controllers
             if (medicoResult.IsFailed)
                 return NotFound(medicoResult.Errors);
 
-            var viewModel = mapeador.Map<VisualizarMedicoViewModel>(medicoResult.Value);
+            var viewModel = mapeador.Map<FormsMedicoViewModel>(medicoResult.Value);
 
             return Ok(viewModel);
         }

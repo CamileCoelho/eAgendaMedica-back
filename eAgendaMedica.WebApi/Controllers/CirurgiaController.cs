@@ -84,11 +84,27 @@ namespace eAgendaMedica.WebApi.Controllers
             return Ok(viewModel);
         }
 
-        [HttpGet("visualiacao-completa/{id}")]
-        [ProducesResponseType(typeof(VisualizarCirurgiaViewModel), 200)]
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(FormsCirurgiaViewModel), 200)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
         public async Task<IActionResult> SelecionarPorId(Guid id)
+        {
+            var consultaResult = await servicoCirurgia.SelecionarPorIdAsync(id);
+
+            if (consultaResult.IsFailed)
+                return NotFound(consultaResult.Errors);
+
+            var viewModel = mapeador.Map<FormsCirurgiaViewModel>(consultaResult.Value);
+
+            return Ok(viewModel);
+        }
+
+        [HttpGet("visualizacao-completa/{id}")]
+        [ProducesResponseType(typeof(VisualizarCirurgiaViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 404)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> SelecionarCompletaPorId(Guid id)
         {
             var cirurgiaResult = await servicoCirurgia.SelecionarPorIdAsync(id);
 

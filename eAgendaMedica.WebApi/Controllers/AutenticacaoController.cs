@@ -3,7 +3,7 @@ using eAgendaMedica.WebApi.ViewModels.ModuloAutenticacao;
 
 namespace eAgendaMedica.WebApi.Controllers
 {
-    [Route("api/contas")]
+    [Route("api/conta")]
     [ApiController]
     public class AutenticacaoController : ApiControllerBase
     {
