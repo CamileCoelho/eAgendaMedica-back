@@ -15,31 +15,25 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
         public Cirurgia()
         {
             DataInicio = DateTime.Now;
-            DataTermino = DataInicio;
+            DataTermino = DateTime.Now;
             HoraInicio = DataInicio.TimeOfDay;
             HoraTermino = DataInicio.TimeOfDay;
             PeriodoRecuperacao = TimeSpan.FromMinutes(240);
             Medicos = new List<Medico>();
         }
 
-        public Cirurgia(string? detalhes, DateTime data, TimeSpan horaInicio, TimeSpan horaTermino, List<Medico> medicos)
+        public Cirurgia(string? detalhes, DateTime dataInicio, DateTime dataTermino, TimeSpan horaInicio, TimeSpan horaTermino, List<Medico> medicos)
         {
             Detalhes = detalhes;
-            DataInicio = data;
-            DataTermino = data;
+            DataInicio = dataInicio;
+            DataTermino = dataTermino;
             HoraInicio = horaInicio;
             HoraTermino = horaTermino;
+
+            DataInicio = DataInicio.Date + HoraInicio;
+            DataTermino = DataTermino.Date + HoraTermino;
+
             PeriodoRecuperacao = TimeSpan.FromMinutes(240);
-
-            TimeSpan novaHora = HoraTermino.Add(PeriodoRecuperacao);
-
-            while (novaHora.TotalHours >= 24)
-            {
-                DataTermino = DataTermino.AddDays(1);
-                novaHora = novaHora.Subtract(TimeSpan.FromHours(24));
-            }
-
-            HoraTermino = novaHora;
             Medicos = medicos;
         }
 

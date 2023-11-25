@@ -16,31 +16,26 @@ namespace eAgendaMedica.Dominio.ModuloAtividade
         public Consulta()
         {
             DataInicio = DateTime.Now;
-            DataTermino = DataInicio;
+            DataTermino = DateTime.Now; 
             HoraInicio = DataInicio.TimeOfDay;
             HoraTermino = DataInicio.TimeOfDay;
             PeriodoRecuperacao = TimeSpan.FromMinutes(20);
             Medico = new Medico();
         }
 
-        public Consulta(string? detalhes, DateTime data, TimeSpan horaInicio, TimeSpan horaTermino, Medico medico)
+        public Consulta(string? detalhes, DateTime dataInicio, DateTime dataTermino, TimeSpan horaInicio, TimeSpan horaTermino, Medico medico)
         {
             Detalhes = detalhes;
-            DataInicio = data; 
-            DataTermino = data;
+            DataInicio = dataInicio; 
+            DataTermino = dataTermino;
             HoraInicio = horaInicio;
             HoraTermino = horaTermino;
+
+            DataInicio = DataInicio.Date + HoraInicio;
+            DataTermino = DataTermino.Date + HoraTermino;
+
             PeriodoRecuperacao = TimeSpan.FromMinutes(20);
-
-            TimeSpan novaHora = HoraTermino.Add(PeriodoRecuperacao);
-
-            while (novaHora.TotalHours >= 24)
-            {
-                DataTermino = DataTermino.AddDays(1);
-                novaHora = novaHora.Subtract(TimeSpan.FromHours(24));
-            }
-
-            HoraTermino = novaHora;
+            HoraTermino = horaTermino;
             Medico = medico;
         }
 

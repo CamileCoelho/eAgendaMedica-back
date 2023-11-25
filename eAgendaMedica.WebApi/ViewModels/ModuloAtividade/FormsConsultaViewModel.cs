@@ -6,6 +6,7 @@ namespace eAgendaMedica.WebApi.ViewModels.ModuloAtividade
     {
         public string? Detalhes { get; set; }
         public DateTime DataInicio { get; set; }
+        public DateTime DataTermino { get; set; }
         public TimeSpan HoraInicio { get; set; }
         public TimeSpan HoraTermino { get; set; }
         public Guid MedicoId { get; set; }

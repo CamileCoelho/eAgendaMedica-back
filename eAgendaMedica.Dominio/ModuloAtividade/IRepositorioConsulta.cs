@@ -2,8 +2,8 @@
 {
     public interface IRepositorioConsulta : IRepositorio<Consulta>
     {
-        List<Consulta> SelecionarAtividadesFuturas(DateTime dataInicial, DateTime dataFinal);
+        //List<Consulta> SelecionarAtividadesFuturas(DateTime dataInicial, DateTime dataFinal);
 
-        List<Consulta> SelecionarAtividadesPassadas(DateTime dataDeHoje);
+        //List<Consulta> SelecionarAtividadesPassadas(DateTime dataDeHoje);
     }
 }
