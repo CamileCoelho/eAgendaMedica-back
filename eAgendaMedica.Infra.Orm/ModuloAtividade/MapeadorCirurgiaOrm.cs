@@ -10,7 +10,8 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
         {
             builder.ToTable("TBCirurgia");
 
-            builder.Property(x => x.Id).ValueGeneratedNever(); builder.Property(x => x.DataInicio).IsRequired();
+            builder.Property(x => x.Id).ValueGeneratedNever(); 
+            builder.Property(x => x.DataInicio).IsRequired();
             builder.Property(x => x.Detalhes).HasColumnType("varchar(400)").IsRequired(false);
             builder.Property(x => x.DataInicio).IsRequired();
             builder.Property(x => x.DataTermino).IsRequired();

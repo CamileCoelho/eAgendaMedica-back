@@ -14,7 +14,13 @@ namespace eAgendaMedica.Infra.Orm.ModuloMedico
             builder.Property(x => x.Nome).HasColumnType("varchar(200)").IsRequired();
             builder.Property(x => x.Crm).HasColumnType("varchar(20)").IsRequired();
             builder.Property(x => x.Especialidade).HasColumnType("varchar(300)").IsRequired();
-            
+
+            builder.HasMany(x => x.Cirurgias)
+                   .WithMany(x => x.Medicos);
+
+            builder.HasMany(x => x.Consultas)
+                   .WithOne(x => x.Medico);
+
             builder.HasOne(x => x.Usuario)
                    .WithMany()
                    .IsRequired()

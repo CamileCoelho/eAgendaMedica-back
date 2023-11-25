@@ -27,19 +27,19 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
             return await registros.Include(x => x.Medico).ToListAsync();
         }
 
-        public List<Consulta> SelecionarAtividadesFuturas(DateTime dataInicial, DateTime dataFinal)
-        {
-            return registros
-              .Where(x => x.DataInicio >= dataInicial)
-              .Where(x => x.DataInicio <= dataFinal)
-              .ToList();
-        }
+        //public List<Consulta> SelecionarAtividadesFuturas(DateTime dataInicial, DateTime dataFinal)
+        //{
+        //    return registros
+        //      .Where(x => x.DataInicio >= dataInicial)
+        //      .Where(x => x.DataInicio <= dataFinal)
+        //      .ToList();
+        //}
 
-        public List<Consulta> SelecionarAtividadesPassadas(DateTime dataDeHoje)
-        {
-            return registros
-               .Where(x => x.DataInicio < dataDeHoje)
-               .ToList();
-        }
+        //public List<Consulta> SelecionarAtividadesPassadas(DateTime dataDeHoje)
+        //{
+        //    return registros
+        //       .Where(x => x.DataInicio < dataDeHoje)
+        //       .ToList();
+        //}
     }
 }

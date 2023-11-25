@@ -33,6 +33,7 @@ namespace eAgendaMedica.WebApi.Config
 
             services.AddTransient<ConfigFormsConsultaMappingAction>();
             services.AddTransient<ConfigFormsCirurgiaMappingAction>();
+            services.AddTransient<ConfigCirurgiaMappingAction>();
         }
     }
 }

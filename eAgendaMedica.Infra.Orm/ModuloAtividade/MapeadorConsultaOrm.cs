@@ -10,7 +10,8 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
         {
             builder.ToTable("TBConsulta");
 
-            builder.Property(x => x.Id).ValueGeneratedNever();builder.Property(x => x.DataInicio).IsRequired();
+            builder.Property(x => x.Id).ValueGeneratedNever();
+            builder.Property(x => x.DataInicio).IsRequired();
             builder.Property(x => x.Detalhes).HasColumnType("varchar(400)").IsRequired(false);
             builder.Property(x => x.DataInicio).IsRequired();
             builder.Property(x => x.DataTermino).IsRequired();
@@ -19,7 +20,7 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
             builder.Property(x => x.PeriodoRecuperacao).HasColumnType("bigint").IsRequired();
 
             builder.HasOne(x => x.Medico)
-                   .WithMany() 
+                   .WithMany(x => x.Consultas)
                    .IsRequired() 
                    .HasForeignKey("MedicoId") 
                    .OnDelete(DeleteBehavior.NoAction);

@@ -2,7 +2,6 @@
 using eAgendaMedica.Dominio.ModuloAtividade;
 using eAgendaMedica.Infra.Orm.Compartilhado;
 using Microsoft.EntityFrameworkCore;
-using System.Numerics;
 
 namespace eAgendaMedica.Infra.Orm.ModuloAtividade
 {
@@ -28,19 +27,19 @@ namespace eAgendaMedica.Infra.Orm.ModuloAtividade
             return await registros.Include(x => x.Medicos).ToListAsync();
         }
 
-        public List<Cirurgia> SelecionarAtividadesFuturas(DateTime dataInicial, DateTime dataFinal)
-        {
-            return registros
-              .Where(x => x.DataInicio >= dataInicial)
-              .Where(x => x.DataInicio <= dataFinal)
-              .ToList();
-        }
+        //public List<Cirurgia> SelecionarAtividadesFuturas(DateTime dataInicial, DateTime dataFinal)
+        //{
+        //    return registros
+        //      .Where(x => x.DataInicio >= dataInicial)
+        //      .Where(x => x.DataInicio <= dataFinal)
+        //      .ToList();
+        //}
 
-        public List<Cirurgia> SelecionarAtividadesPassadas(DateTime dataDeHoje)
-        {
-            return registros
-               .Where(x => x.DataInicio < dataDeHoje)
-               .ToList();
-        }
+        //public List<Cirurgia> SelecionarAtividadesPassadas(DateTime dataDeHoje)
+        //{
+        //    return registros
+        //       .Where(x => x.DataInicio < dataDeHoje)
+        //       .ToList();
+        //}
     }
 }
