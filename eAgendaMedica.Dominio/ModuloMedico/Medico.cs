@@ -9,9 +9,11 @@ namespace eAgendaMedica.Dominio.ModuloMedico
         public string Crm { get; set; }
         public string Especialidade { get; set; }
         public List<Cirurgia> Cirurgias { get; set; }
+        public List<Consulta> Consultas { get; set; }
 
         public Medico()
         {
+            Consultas = new();
             Cirurgias = new();
         }
 
@@ -28,6 +30,7 @@ namespace eAgendaMedica.Dominio.ModuloMedico
             Crm = registroAtualizado.Crm;
             Especialidade = registroAtualizado.Especialidade;
             Cirurgias = registroAtualizado.Cirurgias;
+            Consultas = registroAtualizado.Consultas;
         }
 
         public override bool Equals(object obj)

@@ -15,11 +15,15 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
 
         public async Task<Result<Consulta>> InserirAsync(Consulta consulta)
         {
-            //validar também se existe um CRM válido, para pode passar uma mensagem de erro condizente
+            consulta.DataInicio = consulta.DataInicio.Date + consulta.HoraInicio;
+            consulta.DataTermino = consulta.DataTermino.Date + consulta.HoraTermino;
+
             var resultadoValidacao = Validar(consulta);
 
             if (resultadoValidacao.IsFailed)
                 return Result.Fail(resultadoValidacao.Errors);
+
+            consulta.Medico.Consultas.Add(consulta);
 
             await repositorioConsulta.InserirAsync(consulta);
 
@@ -30,10 +34,16 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
 
         public async Task<Result<Consulta>> EditarAsync(Consulta consulta)
         {
+            consulta.DataInicio = consulta.DataInicio.Date + consulta.HoraInicio;
+            consulta.DataTermino = consulta.DataTermino.Date + consulta.HoraTermino;
+
             var resultadoValidacao = Validar(consulta);
 
             if (resultadoValidacao.IsFailed)
                 return Result.Fail(resultadoValidacao.Errors);
+
+            if (!consulta.Medico.Consultas.Contains(consulta))
+                consulta.Medico.Consultas.Add(consulta);
 
             repositorioConsulta.Editar(consulta);
 
@@ -47,7 +57,7 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
             var consulta = await repositorioConsulta.SelecionarPorIdAsync(id);
 
             if (consulta == null)
-                return Result.Fail("Consulta não encontrado.");
+                return Result.Fail("Consulta não encontrada.");
 
             repositorioConsulta.Excluir(consulta);
 
@@ -68,9 +78,37 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
             var consulta = await repositorioConsulta.SelecionarPorIdAsync(id);
 
             if (consulta == null)
-                return Result.Fail("Consulta não encontrado.");
+                return Result.Fail("Consulta não encontrada.");
 
             return Result.Ok(consulta);
         }
+
+        protected override Result Validar(Consulta obj)
+        {
+            var validador = new ValidadorConsulta();
+
+            var resultadoValidacao = validador.Validate(obj);
+
+            var erros = new List<Error>();
+
+            if (VerificarConflitoHorario(obj.Medico, obj.DataInicio, obj.DataTermino, obj.Id))
+            {
+                Log.Logger.Warning($"O médico '{obj.Medico.Nome}' já possuí uma atividade que conflita com esse período.");
+
+                erros.Add(new Error($"O médico '{obj.Medico.Nome}' já possuí uma atividade que conflita com esse período."));
+            }
+
+            foreach (var validationFailure in resultadoValidacao.Errors)
+            {
+                Log.Logger.Warning(validationFailure.ErrorMessage);
+
+                erros.Add(new Error(validationFailure.ErrorMessage));
+            }
+
+            if (erros.Any())
+                return Result.Fail(erros);
+
+            return Result.Ok();
+        }        
     }
 }

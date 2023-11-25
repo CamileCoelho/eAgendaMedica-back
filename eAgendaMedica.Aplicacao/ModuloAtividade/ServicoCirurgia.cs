@@ -1,4 +1,5 @@
 ﻿using eAgendaMedica.Dominio.ModuloAtividade;
+using eAgendaMedica.Dominio.ModuloMedico;
 
 namespace eAgendaMedica.Aplicacao.ModuloAtividade
 {
@@ -15,10 +16,18 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
 
         public async Task<Result<Cirurgia>> InserirAsync(Cirurgia cirurgia)
         {
+            cirurgia.DataInicio = cirurgia.DataInicio.Date + cirurgia.HoraInicio;
+            cirurgia.DataTermino = cirurgia.DataTermino.Date + cirurgia.HoraTermino;
+
             var resultadoValidacao = Validar(cirurgia);
 
             if (resultadoValidacao.IsFailed)
                 return Result.Fail(resultadoValidacao.Errors);
+
+            foreach (var m in cirurgia.Medicos)
+            {
+                m.Cirurgias.Add(cirurgia);
+            }
 
             await repositorioCirurgia.InserirAsync(cirurgia);
 
@@ -29,10 +38,19 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
 
         public async Task<Result<Cirurgia>> EditarAsync(Cirurgia cirurgia)
         {
+            cirurgia.DataInicio = cirurgia.DataInicio.Date + cirurgia.HoraInicio;
+            cirurgia.DataTermino = cirurgia.DataTermino.Date + cirurgia.HoraTermino;
+
             var resultadoValidacao = Validar(cirurgia);
 
             if (resultadoValidacao.IsFailed)
                 return Result.Fail(resultadoValidacao.Errors);
+            
+            foreach (var m in cirurgia.Medicos)
+            {
+                if (!m.Cirurgias.Contains(cirurgia))
+                    m.Cirurgias.Add(cirurgia);
+            }
 
             repositorioCirurgia.Editar(cirurgia);
 
@@ -46,7 +64,7 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
             var cirurgia = await repositorioCirurgia.SelecionarPorIdAsync(id);
 
             if (cirurgia == null)
-                return Result.Fail("Cirurgia não encontrado.");
+                return Result.Fail("Cirurgia não encontrada.");
 
             repositorioCirurgia.Excluir(cirurgia);
 
@@ -67,9 +85,45 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
             var cirurgia = await repositorioCirurgia.SelecionarPorIdAsync(id);
 
             if (cirurgia == null)
-                return Result.Fail("Cirurgia não encontrado.");
+                return Result.Fail("Cirurgia não encontrada.");
 
             return Result.Ok(cirurgia);
+        }
+
+        protected override Result Validar(Cirurgia obj)
+        {
+            var validador = new ValidadorCirurgia();
+
+            var resultadoValidacao = validador.Validate(obj);
+
+            var erros = new List<Error>();
+
+            Medico medico = null;
+
+            foreach (var m in obj.Medicos)
+            {
+                if (VerificarConflitoHorario(m, obj.DataInicio, obj.DataTermino, obj.Id))
+                    medico = m;
+            }
+
+            if (medico != null)
+            {
+                Log.Logger.Warning($"O médico '{medico.Nome}' já possuí uma atividade que conflita com esse período.");
+
+                erros.Add(new Error($"O médico '{medico.Nome}' já possuí uma atividade que conflita com esse período."));
+            }
+
+            foreach (var validationFailure in resultadoValidacao.Errors)
+            {
+                Log.Logger.Warning(validationFailure.ErrorMessage);
+
+                erros.Add(new Error(validationFailure.ErrorMessage));
+            }
+
+            if (erros.Any())
+                return Result.Fail(erros);
+
+            return Result.Ok();
         }
     }
 }
