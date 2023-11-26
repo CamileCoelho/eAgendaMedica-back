@@ -6,11 +6,13 @@
         {
             RuleFor(x => x.DataInicio)
                .NotNull()
-               .NotEmpty();
+               .NotEmpty()
+               .WithMessage("A data de inicio deve ser informada.");
 
             RuleFor(x => x.DataTermino)
                .NotNull()
-               .NotEmpty();
+               .NotEmpty()
+               .WithMessage("A data de término deve ser informada.");
 
             RuleFor(x => x.DataInicio)
                 .NotNull()
@@ -28,7 +30,8 @@
             });
 
             RuleFor(x => x.PeriodoRecuperacao)
-                .Equal(TimeSpan.FromMinutes(20));
+                .Equal(TimeSpan.FromMinutes(20))
+                .WithMessage("O periodo de recuperação deve ser de 20 minutos.");
 
             RuleFor(x => x.MedicoId)
                 .NotNull()

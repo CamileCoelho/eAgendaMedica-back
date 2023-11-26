@@ -7,7 +7,8 @@
             RuleFor(x => x.Nome)
                 .NotNull()
                 .NotEmpty()
-                .MinimumLength(3);
+                .MinimumLength(3)
+                .WithMessage("Um nome com ao menos 3 caracteres deve ser informado.");
 
             RuleFor(x => x.Crm)
                 .NotNull()
@@ -17,7 +18,8 @@
             RuleFor(x => x.Especialidade)
                 .NotNull()
                 .NotEmpty()
-                .MinimumLength(3); 
+                .MinimumLength(3)
+                .WithMessage("Uma especialidade com ao menos 3 caracteres deve ser informada.");
         }
     }
 }
