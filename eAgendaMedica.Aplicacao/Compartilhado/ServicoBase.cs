@@ -1,4 +1,7 @@
-﻿namespace eAgendaMedica.Aplicacao
+﻿using eAgendaMedica.Dominio.ModuloAtividade;
+using eAgendaMedica.Dominio.ModuloMedico;
+
+namespace eAgendaMedica.Aplicacao
 {
     public abstract class ServicoBase<TDominio, TValidador> where TValidador : AbstractValidator<TDominio>, new()
     {
@@ -21,6 +24,37 @@
                 return Result.Fail(erros);
 
             return Result.Ok();
+        }
+
+        public bool VerificarConflitoHorario(Medico medico, DateTime novoInicio, DateTime novoTermino, Guid id)
+        {
+            foreach (var consulta in medico.Consultas)
+            {
+                DateTime termino = consulta.DataTermino.AddMinutes(20);
+                DateTime terminoNovo = novoTermino.AddMinutes(20);
+
+                if (consulta.Id != id && consulta.Medico == medico &&
+                   ((novoInicio >= consulta.DataInicio && novoInicio <= termino) ||
+                   (terminoNovo >= consulta.DataInicio && terminoNovo <= termino)))
+                {
+                    return true;
+                }
+            }
+
+            foreach (var cirurgia in medico.Cirurgias)
+            {
+                DateTime termino = cirurgia.DataTermino.AddHours(4);
+                DateTime terminoNovo = novoTermino.AddHours(4);
+
+                if (cirurgia.Id != id && cirurgia.Medicos.Contains(medico) &&
+                   ((novoInicio >= cirurgia.DataInicio && novoInicio <= termino) ||
+                   (terminoNovo >= cirurgia.DataInicio && terminoNovo <= termino)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

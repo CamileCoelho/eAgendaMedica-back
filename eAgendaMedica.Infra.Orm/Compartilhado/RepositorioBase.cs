@@ -1,11 +1,12 @@
 ﻿using eAgendaMedica.Dominio.Compartilhado;
+using Microsoft.EntityFrameworkCore;
 
 namespace eAgendaMedica.Infra.Orm.Compartilhado
 {
     public abstract class RepositorioBase<T> where T : EntidadeBase<T>
     {
+        protected readonly eAgendaMedicaDbContext dbContext;
         protected DbSet<T> registros;
-        private readonly eAgendaMedicaDbContext dbContext;
 
         public RepositorioBase(IContextoPersistencia contextoPersistencia)
         {
@@ -13,10 +14,12 @@ namespace eAgendaMedica.Infra.Orm.Compartilhado
 
             registros = dbContext.Set<T>();
         }
-        
-        public virtual void Inserir(T novoRegistro)
+
+        public virtual async Task<bool> InserirAsync(T novoRegistro)
         {
-            registros.Add(novoRegistro);
+            await registros.AddAsync(novoRegistro);
+
+            return true;
         }
 
         public virtual void Editar(T registro)
@@ -32,18 +35,6 @@ namespace eAgendaMedica.Infra.Orm.Compartilhado
         public virtual T SelecionarPorId(Guid id)
         {
             return registros.SingleOrDefault(x => x.Id == id);
-        }
-
-        public virtual List<T> SelecionarTodos()
-        {
-            return registros.ToList();
-        }
-
-        public virtual async Task<bool> InserirAsync(T novoRegistro)
-        {
-            await registros.AddAsync(novoRegistro);
-
-            return true;
         }
 
         public virtual async Task<T> SelecionarPorIdAsync(Guid id)
