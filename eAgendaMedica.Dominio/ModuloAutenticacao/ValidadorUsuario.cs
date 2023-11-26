@@ -5,8 +5,8 @@
         public ValidadorUsuario()
         {
             RuleFor(x => x.Nome)
-                .NotEmpty().WithMessage("O campo vome é obrigatório")
-                .NotNull().WithMessage("O campo vome é obrigatório");
+                .NotEmpty().WithMessage("O campo nome é obrigatório")
+                .NotNull().WithMessage("O campo nome é obrigatório");
         }
     }
 }

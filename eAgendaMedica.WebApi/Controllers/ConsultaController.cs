@@ -1,8 +1,7 @@
-﻿using eAgendaMedica.WebApi.ViewModels.ModuloAtividade;
-using eAgendaMedica.Aplicacao.ModuloAtividade;
+﻿using eAgendaMedica.Aplicacao.ModuloAtividade;
 using eAgendaMedica.Dominio.ModuloAtividade;
+using eAgendaMedica.WebApi.ViewModels.ModuloAtividade;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 
 namespace eAgendaMedica.WebApi.Controllers
 {

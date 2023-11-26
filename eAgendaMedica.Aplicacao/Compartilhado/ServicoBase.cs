@@ -31,10 +31,11 @@ namespace eAgendaMedica.Aplicacao
             foreach (var consulta in medico.Consultas)
             {
                 DateTime termino = consulta.DataTermino.AddMinutes(20);
+                DateTime terminoNovo = novoTermino.AddMinutes(20);
 
                 if (consulta.Id != id && consulta.Medico == medico &&
                    ((novoInicio >= consulta.DataInicio && novoInicio <= termino) ||
-                   (novoTermino >= consulta.DataInicio && novoTermino <= termino)))
+                   (terminoNovo >= consulta.DataInicio && terminoNovo <= termino)))
                 {
                     return true;
                 }
@@ -43,10 +44,11 @@ namespace eAgendaMedica.Aplicacao
             foreach (var cirurgia in medico.Cirurgias)
             {
                 DateTime termino = cirurgia.DataTermino.AddHours(4);
+                DateTime terminoNovo = novoTermino.AddHours(4);
 
                 if (cirurgia.Id != id && cirurgia.Medicos.Contains(medico) &&
                    ((novoInicio >= cirurgia.DataInicio && novoInicio <= termino) ||
-                   (novoTermino >= cirurgia.DataInicio && novoTermino <= termino)))
+                   (terminoNovo >= cirurgia.DataInicio && terminoNovo <= termino)))
                 {
                     return true;
                 }

@@ -16,8 +16,11 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
 
         public async Task<Result<Cirurgia>> InserirAsync(Cirurgia cirurgia)
         {
-            cirurgia.DataInicio = cirurgia.DataInicio.Date + cirurgia.HoraInicio;
-            cirurgia.DataTermino = cirurgia.DataTermino.Date + cirurgia.HoraTermino;
+            if (cirurgia != null)
+            {
+                cirurgia.DataInicio = cirurgia.DataInicio.Date + cirurgia.HoraInicio;
+                cirurgia.DataTermino = cirurgia.DataTermino.Date + cirurgia.HoraTermino;
+            }
 
             var resultadoValidacao = Validar(cirurgia);
 
@@ -90,19 +93,19 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
             return Result.Ok(cirurgia);
         }
 
-        protected override Result Validar(Cirurgia obj)
+        protected override Result Validar(Cirurgia cirurgia)
         {
             var validador = new ValidadorCirurgia();
 
-            var resultadoValidacao = validador.Validate(obj);
+            var resultadoValidacao = validador.Validate(cirurgia);
 
             var erros = new List<Error>();
 
             Medico medico = null;
 
-            foreach (var m in obj.Medicos)
+            foreach (var m in cirurgia.Medicos)
             {
-                if (VerificarConflitoHorario(m, obj.DataInicio, obj.DataTermino, obj.Id))
+                if (VerificarConflitoHorario(m, cirurgia.DataInicio, cirurgia.DataTermino, cirurgia.Id))
                     medico = m;
             }
 

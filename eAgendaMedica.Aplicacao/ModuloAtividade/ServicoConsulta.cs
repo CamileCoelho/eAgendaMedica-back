@@ -15,8 +15,11 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
 
         public async Task<Result<Consulta>> InserirAsync(Consulta consulta)
         {
-            consulta.DataInicio = consulta.DataInicio.Date + consulta.HoraInicio;
-            consulta.DataTermino = consulta.DataTermino.Date + consulta.HoraTermino;
+            if (consulta != null)
+            {
+                consulta.DataInicio = consulta.DataInicio.Date + consulta.HoraInicio;
+                consulta.DataTermino = consulta.DataTermino.Date + consulta.HoraTermino;
+            }
 
             var resultadoValidacao = Validar(consulta);
 
@@ -83,19 +86,19 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
             return Result.Ok(consulta);
         }
 
-        protected override Result Validar(Consulta obj)
+        protected override Result Validar(Consulta consulta)
         {
             var validador = new ValidadorConsulta();
 
-            var resultadoValidacao = validador.Validate(obj);
+            var resultadoValidacao = validador.Validate(consulta);
 
             var erros = new List<Error>();
 
-            if (VerificarConflitoHorario(obj.Medico, obj.DataInicio, obj.DataTermino, obj.Id))
+            if (VerificarConflitoHorario(consulta.Medico, consulta.DataInicio, consulta.DataTermino, consulta.Id))
             {
-                Log.Logger.Warning($"O médico '{obj.Medico.Nome}' já possuí uma atividade que conflita com esse período.");
+                Log.Logger.Warning($"O médico '{consulta.Medico.Nome}' já possuí uma atividade que conflita com esse período.");
 
-                erros.Add(new Error($"O médico '{obj.Medico.Nome}' já possuí uma atividade que conflita com esse período."));
+                erros.Add(new Error($"O médico '{consulta.Medico.Nome}' já possuí uma atividade que conflita com esse período."));
             }
 
             foreach (var validationFailure in resultadoValidacao.Errors)
