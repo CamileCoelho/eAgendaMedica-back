@@ -36,11 +36,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAgendaMedica.Aplicacao", "
 		{6A0B5DDF-1F48-4003-9BF2-BBAE420F99CB} = {6A0B5DDF-1F48-4003-9BF2-BBAE420F99CB}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAgendaMedica.TestProject", "eAgendaMedica.TestProject\eAgendaMedica.TestProject.csproj", "{CECE1B0A-659B-4F98-AE55-56048E44FFA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAgendaMedica.TestsUnitarios.TestProject", "eAgendaMedica.TestProject\eAgendaMedica.TestsUnitarios.TestProject.csproj", "{CECE1B0A-659B-4F98-AE55-56048E44FFA5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAgendaMedica.WebApi", "eAgendaMedica.WebApi\eAgendaMedica.WebApi.csproj", "{322EBF2E-85AA-4122-86EE-6E6813007E6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eAgendaMedica.Integration.TestProject", "eAgendaMedica.Integration.TestProject\eAgendaMedica.Integration.TestProject.csproj", "{AB987C7E-0B44-4682-9C46-B9406BCBF48F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAgendaMedica.Integration.TestProject", "eAgendaMedica.Integration.TestProject\eAgendaMedica.Integration.TestProject.csproj", "{AB987C7E-0B44-4682-9C46-B9406BCBF48F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
