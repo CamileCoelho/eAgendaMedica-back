@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace eAgendaMedica.WebApi.ViewModels.ModuloAutenticacao
+﻿namespace eAgendaMedica.WebApi.ViewModels.ModuloAutenticacao
 {
     public class RegistrarUsuarioViewModel
     {
@@ -8,6 +6,5 @@ namespace eAgendaMedica.WebApi.ViewModels.ModuloAutenticacao
         public string Login { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
-        public string ConfirmarSenha { get; set; }
     }
 }
