@@ -1,94 +1,121 @@
 ﻿using eAgendaMedica.Dominio.ModuloAtividade;
 using eAgendaMedica.Dominio.ModuloMedico;
 using eAgendaMedica.Infra.Orm.ModuloAtividade;
+using eAgendaMedica.Infra.Orm.ModuloMedico;
+using FizzWare.NBuilder;
+using FluentAssertions;
 
 namespace eAgendaMedica.Integration.TestProject.ModuloAtividade
 {
     [TestClass]
     public class RepositorioCirurgiaOrmTest : RepositorioBaseTest
     {
-        Cirurgia cirurgiaInserir;
-        Cirurgia cirurgiaEditar;
-        Cirurgia cirurgiaExcluir;
+        private Guid _usuarioId;
 
-        public RepositorioCirurgiaOrmTest()
+        private RepositorioCirurgiaOrm _repositorioCirurgia;
+        private RepositorioMedicoOrm _repositorioMedico;
+
+        private Medico _medico;
+        private Medico _medico2;
+
+        [TestInitialize]
+        public void Setup()
         {
-            cirurgiaInserir = new Cirurgia("", DateTime.Now, TimeSpan.FromHours(8), TimeSpan.FromHours(12), new List<Medico>());
-            cirurgiaEditar = new Cirurgia("", DateTime.Now, TimeSpan.FromHours(14), TimeSpan.FromHours(18), new List<Medico>());
-            cirurgiaExcluir = new Cirurgia("", DateTime.Now, TimeSpan.FromHours(20), TimeSpan.FromHours(22), new List<Medico>());
+            ApagarDados();
+
+            _usuarioId = RegistrarUsuario();
+
+            _repositorioCirurgia = new RepositorioCirurgiaOrm(dbContext);
+            _repositorioMedico = new RepositorioMedicoOrm(dbContext);
+
+            BuilderSetup.SetCreatePersistenceMethod<Medico>(_repositorioMedico.InserirTest);
+            BuilderSetup.SetCreatePersistenceMethod<Cirurgia>(_repositorioCirurgia.InserirTest);
+
+            var medico = Builder<Medico>.CreateNew().With(x => x.UsuarioId = _usuarioId).Persist();
+            dbContext.SaveChanges();
+
+            _medico = _repositorioMedico.SelecionarPorId(medico.Id);
+            _medico2 = _repositorioMedico.SelecionarPorId(medico.Id);
+
+            _medico.Nome = "Camile";
+            _medico.Crm = "12589-SP";
+            _medico.Especialidade = "Esteticista";
+            _medico2.Nome = "Tales";
+            _medico2.Crm = "12546-SP";
+            _medico2.Especialidade = "Endorinologista";
+
+            _repositorioMedico.Editar(_medico);
+            _repositorioMedico.Editar(_medico2);
+
+            dbContext.SaveChanges();
         }
 
         [TestMethod]
         public async Task Deve_inserir_Cirurgia()
         {
             // Arrange
+            var medicos = new List<Medico>();
+            medicos.Add(_medico);
+            medicos.Add(_medico2);
 
-            var repositorio = new RepositorioCirurgiaOrm(dbContext);
+            var cirurgia = Builder<Cirurgia>.CreateNew().With(x => x.Medicos = medicos).With(x => x.UsuarioId = _usuarioId).Persist();
 
             // Act
-
-            await repositorio.InserirAsync(cirurgiaInserir);
-
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             // Assert
+            var resposta = _repositorioCirurgia.SelecionarPorId(cirurgia.Id);
 
-            var resposta = repositorio.SelecionarPorId(cirurgiaInserir.Id);
-
-            Assert.IsNotNull(resposta);
-            Assert.AreEqual(cirurgiaInserir.Id, resposta.Id);
+            cirurgia.Should().Be(cirurgia);
         }
 
         [TestMethod]
-        public void Deve_editar_cirurgia()
+        public async Task Deve_editar_cirurgia()
         {
             // Arrange
-            var repositorio = new RepositorioCirurgiaOrm(dbContext);
+            var medicos = new List<Medico>();
+            medicos.Add(_medico);
+            medicos.Add(_medico2);
 
-            repositorio.InserirAsync(cirurgiaEditar).Wait();
+            var cirurgia = Builder<Cirurgia>.CreateNew().With(x => x.Medicos = medicos).With(x => x.UsuarioId = _usuarioId).Persist();
+            await dbContext.SaveChangesAsync();
 
-            dbContext.SaveChanges();
+            var cirurgia2 = _repositorioCirurgia.SelecionarPorId(cirurgia.Id);
+            DateTime data = DateTime.Now;
+            cirurgia2.DataInicio = data;
+            cirurgia2.HoraInicio = TimeSpan.FromMinutes(20);
+            cirurgia2.DataTermino = data;
+            cirurgia2.HoraTermino = TimeSpan.FromMinutes(40);
 
             // Act
-
-            cirurgiaEditar.HoraInicio = TimeSpan.FromHours(10);
-            cirurgiaEditar.HoraTermino = TimeSpan.FromHours(14);
-
-            repositorio.Editar(cirurgiaEditar);
-
-            dbContext.SaveChanges();
+            _repositorioCirurgia.Editar(cirurgia2);
+            await dbContext.SaveChangesAsync();
 
             // Assert
-
-            var resposta = repositorio.SelecionarPorId(cirurgiaEditar.Id);
-
-            Assert.AreEqual(TimeSpan.FromHours(10), resposta.HoraInicio);
-            Assert.AreEqual(TimeSpan.FromHours(14), resposta.HoraTermino);
-            //fazer algo que verifique se o medico 3 foi removido e o medico 1 foi adicionado 
+            cirurgia2.DataInicio.Should().Be(data);
+            cirurgia2.HoraInicio.Should().Be(TimeSpan.FromMinutes(20));
+            cirurgia2.DataTermino.Should().Be(data);
+            cirurgia2.HoraTermino.Should().Be(TimeSpan.FromMinutes(40));
         }
 
         [TestMethod]
-        public void Deve_excluir_cirurgia()
+        public async Task Deve_excluir_cirurgia()
         {
             // Arrange
+            var medicos = new List<Medico>();
+            medicos.Add(_medico);
+            medicos.Add(_medico2);
 
-            var repositorio = new RepositorioCirurgiaOrm(dbContext);
-
-            repositorio.InserirAsync(cirurgiaExcluir).Wait();
-
-            dbContext.SaveChanges();
+            var cirurgia = Builder<Cirurgia>.CreateNew().With(x => x.Medicos = medicos).With(x => x.UsuarioId = _usuarioId).Persist();
+            await dbContext.SaveChangesAsync();
 
             // Act
-
-            repositorio.Excluir(cirurgiaExcluir);
-
-            dbContext.SaveChanges();
+            _repositorioCirurgia.Excluir(cirurgia);
+            await dbContext.SaveChangesAsync();
 
             // Assert
-
-            var resposta = repositorio.SelecionarPorId(cirurgiaExcluir.Id);
-
-            Assert.IsNull(resposta);
+            var cirurgia2 = _repositorioCirurgia.SelecionarPorId(cirurgia.Id);
+            cirurgia2.Should().Be(null);
         }
     }
 }

@@ -1,93 +1,78 @@
 ﻿using eAgendaMedica.Dominio.ModuloMedico;
 using eAgendaMedica.Infra.Orm.ModuloMedico;
+using FizzWare.NBuilder;
+using FluentAssertions;
 
 namespace eAgendaMedica.Integration.TestProject.ModuloMedico
 {
     [TestClass]
     public class RepositorioMedicoOrmTest : RepositorioBaseTest
     {
-        Medico medicoInserir;
-        Medico medicoEditar;
-        Medico medicoExcluir;
+        private Guid _usuarioId;
 
-        public RepositorioMedicoOrmTest()
+        private RepositorioMedicoOrm _repositorioMedico;
+
+        [TestInitialize]
+        public void Setup()
         {
-            medicoInserir = new Medico("Camile", "65489-SP", "Dev");
-            medicoEditar = new Medico("Tales", "12345-SC", "Dev");
-            medicoExcluir = new Medico("Rech", "85496-SC", "Dev");
+            ApagarDados();
+
+            _usuarioId = RegistrarUsuario();
+
+            _repositorioMedico = new RepositorioMedicoOrm(dbContext);
+
+            BuilderSetup.SetCreatePersistenceMethod<Medico>(_repositorioMedico.InserirTest);
         }
 
         [TestMethod]
         public async Task Deve_inserir_Medico()
         {
             // Arrange
-
-            var repositorio = new RepositorioMedicoOrm(dbContext);
-            
+            var medico = Builder<Medico>.CreateNew().With(x => x.UsuarioId = _usuarioId).Persist();
+                    
             // Act
-
-            await repositorio.InserirAsync(medicoInserir);
-
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             // Assert
+            var resposta = _repositorioMedico.SelecionarPorId(medico.Id);
 
-            var resposta = repositorio.SelecionarPorId(medicoInserir.Id);
-
-            Assert.IsNotNull(resposta);
-            Assert.AreEqual(medicoInserir.Id, resposta.Id);
+            medico.Should().Be(medico);
         }
 
         [TestMethod]
-        public void Deve_editar_medico()
+        public async Task Deve_editar_medico()
         {
             // Arrange
+            var medico = Builder<Medico>.CreateNew().With(x => x.UsuarioId = _usuarioId).Persist();
+            await dbContext.SaveChangesAsync();
 
-            var repositorio = new RepositorioMedicoOrm(dbContext);
-
-            repositorio.InserirAsync(medicoEditar).Wait();
-
-            dbContext.SaveChanges();
+            var medico2 = _repositorioMedico.SelecionarPorId(medico.Id);
+            medico2.Nome = "Camile";
+            medico2.Crm = "12589-SP";
 
             // Act
-
-            medicoEditar.Nome = "Camile Editado";
-            medicoEditar.Especialidade = "Programação";
-
-            repositorio.Editar(medicoEditar);
-
-            dbContext.SaveChanges();
+            _repositorioMedico.Editar(medico2);
+            await dbContext.SaveChangesAsync();
 
             // Assert
-
-            var resposta = repositorio.SelecionarPorId(medicoEditar.Id);
-
-            Assert.AreEqual("Camile Editado", resposta.Nome);
-            Assert.AreEqual("Programação", resposta.Especialidade);
+            medico2.Nome.Should().Be("Camile");
+            medico2.Crm.Should().Be("12589-SP");
         }
 
         [TestMethod]
-        public void Deve_excluir_medico()
+        public async Task Deve_excluir_medico()
         {
             // Arrange
-
-            var repositorio = new RepositorioMedicoOrm(dbContext);
-
-            repositorio.InserirAsync(medicoExcluir).Wait();
-
-            dbContext.SaveChanges();
+            var medico = Builder<Medico>.CreateNew().With(x => x.UsuarioId = _usuarioId).Persist();
+            await dbContext.SaveChangesAsync();
 
             // Act
-
-            repositorio.Excluir(medicoExcluir);
-
-            dbContext.SaveChanges();
+            _repositorioMedico.Excluir(medico);
+            await dbContext.SaveChangesAsync();
 
             // Assert
-
-            var resposta = repositorio.SelecionarPorId(medicoExcluir.Id);
-
-            Assert.IsNull(resposta);
+            var medico2 = _repositorioMedico.SelecionarPorId(medico.Id);
+            medico2.Should().Be(null);
         }
     }
 }

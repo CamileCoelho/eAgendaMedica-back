@@ -18,7 +18,7 @@ namespace eAgendaMedica.Dominio.Compartilhado.Validators
         {
             nomePropriedade = contextoValidacao.DisplayName;
 
-            Regex rgx = new Regex(@"^\d{5}-[A-Za-z]{2}$");
+            Regex rgx = new Regex(@"^\d{5}-[A-Z]{2}$");
 
             if (rgx.IsMatch(crm))
                 return true;

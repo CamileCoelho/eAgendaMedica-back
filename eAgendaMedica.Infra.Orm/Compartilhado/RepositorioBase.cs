@@ -46,5 +46,10 @@ namespace eAgendaMedica.Infra.Orm.Compartilhado
         {
             return await registros.ToListAsync();
         }
+
+        public virtual void InserirTest(T novoRegistro)
+        {
+            registros.Add(novoRegistro);
+        }
     }
 }

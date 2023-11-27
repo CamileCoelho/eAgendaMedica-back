@@ -1,96 +1,102 @@
 ﻿using eAgendaMedica.Dominio.ModuloAtividade;
 using eAgendaMedica.Dominio.ModuloMedico;
 using eAgendaMedica.Infra.Orm.ModuloAtividade;
+using eAgendaMedica.Infra.Orm.ModuloMedico;
+using FizzWare.NBuilder;
+using FluentAssertions;
 
 namespace eAgendaMedica.Integration.TestProject.ModuloAtividade
 {
     [TestClass]
     public class RepositorioConsultaOrmTest : RepositorioBaseTest
     {
-        Consulta consultaInserir;
-        Consulta consultaEditar;
-        Consulta consultaExcluir;
+        private Guid _usuarioId;
 
-        public RepositorioConsultaOrmTest()
+        private RepositorioConsultaOrm _repositorioConsulta;
+        private RepositorioMedicoOrm _repositorioMedico;
+
+        private Medico _medico;
+
+        [TestInitialize]
+        public void Setup()
         {
-            var medico = new Medico("Médico Consulta", "96478-PA", "Especialidade");
+            ApagarDados();
 
-            consultaInserir = new Consulta("", DateTime.Now, TimeSpan.FromHours(8), TimeSpan.FromHours(9), medico);
-            consultaEditar = new Consulta("", DateTime.Now, TimeSpan.FromHours(10), TimeSpan.FromHours(12), medico);
-            consultaExcluir = new Consulta("", DateTime.Now, TimeSpan.FromHours(14), TimeSpan.FromHours(15), medico);
+            _usuarioId = RegistrarUsuario();
+
+            _repositorioConsulta = new RepositorioConsultaOrm(dbContext);
+            _repositorioMedico = new RepositorioMedicoOrm(dbContext);
+
+            BuilderSetup.SetCreatePersistenceMethod<Medico>(_repositorioMedico.InserirTest);
+            BuilderSetup.SetCreatePersistenceMethod<Consulta>(_repositorioConsulta.InserirTest);
+
+            var medico = Builder<Medico>.CreateNew().With(x => x.UsuarioId = _usuarioId).Persist();
+            dbContext.SaveChanges();
+
+            _medico = _repositorioMedico.SelecionarPorId(medico.Id);
+            _medico.Nome = "Camile";
+            _medico.Crm = "12589-SP";
+            _medico.Especialidade = "Esteticista";
+
+            _repositorioMedico.Editar(_medico);
+
+            dbContext.SaveChanges();
         }
 
         [TestMethod]
         public async Task Deve_inserir_Consulta()
         {
             // Arrange
-
-            var repositorio = new RepositorioConsultaOrm(dbContext);
+            var consulta = Builder<Consulta>.CreateNew().With(x => x.Medico = _medico).With(x => x.UsuarioId = _usuarioId).Persist();
 
             // Act
-
-            await repositorio.InserirAsync(consultaInserir);
-
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             // Assert
+            var resposta = _repositorioConsulta.SelecionarPorId(consulta.Id);
 
-            var resposta = repositorio.SelecionarPorId(consultaInserir.Id);
-
-            Assert.IsNotNull(resposta);
-            Assert.AreEqual(consultaInserir.Id, resposta.Id);
+            consulta.Should().Be(consulta);
         }
 
         [TestMethod]
-        public void Deve_editar_consulta()
+        public async Task Deve_editar_consulta()
         {
             // Arrange
+            var consulta = Builder<Consulta>.CreateNew().With(x => x.Medico = _medico).With(x => x.UsuarioId = _usuarioId).Persist();
+            await dbContext.SaveChangesAsync();
 
-            var repositorio = new RepositorioConsultaOrm(dbContext);
-
-            repositorio.InserirAsync(consultaEditar).Wait();
-
-            dbContext.SaveChanges();
+            var consulta2 = _repositorioConsulta.SelecionarPorId(consulta.Id);
+            DateTime data = DateTime.Now;
+            consulta2.DataInicio = data;
+            consulta2.HoraInicio = TimeSpan.FromMinutes(20);
+            consulta2.DataTermino = data;
+            consulta2.HoraTermino = TimeSpan.FromMinutes(40);
 
             // Act
-
-            consultaEditar.HoraInicio = TimeSpan.FromHours(13);
-            consultaEditar.HoraTermino = TimeSpan.FromHours(15);
-
-            repositorio.Editar(consultaEditar);
-
-            dbContext.SaveChanges();
+            _repositorioConsulta.Editar(consulta2);
+            await dbContext.SaveChangesAsync();
 
             // Assert
-
-            var resposta = repositorio.SelecionarPorId(consultaEditar.Id);
-
-            Assert.AreEqual(TimeSpan.FromHours(13), resposta.HoraInicio);
-            Assert.AreEqual(TimeSpan.FromHours(15), resposta.HoraTermino);
+            consulta2.DataInicio.Should().Be(data);
+            consulta2.HoraInicio.Should().Be(TimeSpan.FromMinutes(20));
+            consulta2.DataTermino.Should().Be(data);
+            consulta2.HoraTermino.Should().Be(TimeSpan.FromMinutes(40));
         }
 
         [TestMethod]
-        public void Deve_excluir_consulta()
+        public async Task Deve_excluir_consulta()
         {
             // Arrange
-
-            var repositorio = new RepositorioConsultaOrm(dbContext);
-
-            repositorio.InserirAsync(consultaExcluir).Wait();
-
-            dbContext.SaveChanges();
+            var consulta = Builder<Consulta>.CreateNew().With(x => x.Medico = _medico).With(x => x.UsuarioId = _usuarioId).Persist();
+            await dbContext.SaveChangesAsync();
 
             // Act
-
-            repositorio.Excluir(consultaExcluir);
-
-            dbContext.SaveChanges();
+            _repositorioConsulta.Excluir(consulta);
+            await dbContext.SaveChangesAsync();
 
             // Assert
-
-            var resposta = repositorio.SelecionarPorId(consultaExcluir.Id);
-
-            Assert.IsNull(resposta);
+            var consulta2 = _repositorioConsulta.SelecionarPorId(consulta.Id);
+            consulta2.Should().Be(null);
         }
     }
 }
