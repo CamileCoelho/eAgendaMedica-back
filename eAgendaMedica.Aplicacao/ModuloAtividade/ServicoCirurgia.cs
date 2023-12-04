@@ -105,7 +105,7 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
 
             foreach (var m in cirurgia.Medicos)
             {
-                if (VerificarConflitoHorario(m, cirurgia.DataInicio, cirurgia.DataTermino, cirurgia.Id))
+                if (m.VerificarConflitoHorario(m, cirurgia.DataInicio, cirurgia.DataTermino, cirurgia.Id))
                     medico = m;
             }
 

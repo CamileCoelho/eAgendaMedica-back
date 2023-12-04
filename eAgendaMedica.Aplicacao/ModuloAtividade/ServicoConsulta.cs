@@ -94,7 +94,7 @@ namespace eAgendaMedica.Aplicacao.ModuloAtividade
 
             var erros = new List<Error>();
 
-            if (VerificarConflitoHorario(consulta.Medico, consulta.DataInicio, consulta.DataTermino, consulta.Id))
+            if (consulta.Medico.VerificarConflitoHorario(consulta.Medico, consulta.DataInicio, consulta.DataTermino, consulta.Id))
             {
                 Log.Logger.Warning($"O médico '{consulta.Medico.Nome}' já possuí uma atividade que conflita com esse período.");
 
